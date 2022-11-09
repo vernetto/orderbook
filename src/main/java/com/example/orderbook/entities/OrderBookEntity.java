@@ -1,20 +1,23 @@
 package com.example.orderbook.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class OrderBook {
+public class OrderBookEntity {
+    @Id
+    @GeneratedValue
     private Long id;
+    @Column
     private OrderBookStatus status;
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Id
-    @GeneratedValue
+
     public Long getId() {
         return id;
     }

@@ -1,29 +1,31 @@
 package com.example.orderbook.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
-public class Order {
+public class ExecutionEntity {
+    @Id
+    @GeneratedValue
     private Long id;
+    @Column
     private String financialInstrumendId;
+    @Column
     private BigDecimal quantity;
-    private LocalDate entryDate;
-    private OrderType orderType;
+    @Column
     private BigDecimal price;
-
-    private OrderBook orderBook;
+    @Column
+    private ExecutionType executionType;
 
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Id
-    @GeneratedValue
+
     public Long getId() {
         return id;
     }
