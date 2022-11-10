@@ -31,4 +31,48 @@ public class Execution {
     public Long getId() {
         return id;
     }
+
+    public String getFinancialInstrumendId() {
+        return financialInstrumendId;
+    }
+
+    public void setFinancialInstrumendId(String financialInstrumendId) {
+        this.financialInstrumendId = financialInstrumendId;
+    }
+
+    public BigDecimal getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public ExecutionType getExecutionType() {
+        return executionType;
+    }
+
+    public void setExecutionType(ExecutionType executionType) {
+        this.executionType = executionType;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Execution{");
+        sb.append("id=").append(id);
+        sb.append(", financialInstrumendId='").append(financialInstrumendId).append('\'');
+        sb.append(", quantity=").append(quantity);
+        sb.append(", price=").append(price);
+        sb.append(", executionType=").append(executionType);
+        sb.append('}');
+        return sb.toString();
+    }
 }
