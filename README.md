@@ -6,6 +6,18 @@ H2 console: http://localhost:8080/h2-console/ connect as Generic H2 (Embedded), 
 Swagger: http://localhost:8080/v2/api-docs  http://localhost:8080/swagger-ui/index.html#/order-controller
 
 
+# Remarks
+
+Lombok has regrettably not been used because not "production ready" - to be verified.
+
+Validation has been skipped for brevity
+
+Security also skipped for ease of demoing
+
+In the DB the validation of enumerated columns is missing - it should be implemented by triggers of by CHECK constraint
+
+Builders not use for brevity  
+
 # References
 
 https://spring.io/guides/tutorials/rest/
@@ -23,4 +35,6 @@ For RestController, for each @RequestMapping:
 
 foe Entities, for each column add
 @ApiModelProperty(notes = "User Id",name="id",required=true,value="1")
+
+CHECK constraint in DB
 

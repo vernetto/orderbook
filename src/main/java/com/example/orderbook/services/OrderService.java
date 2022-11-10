@@ -1,6 +1,8 @@
 package com.example.orderbook.services;
 
+import com.example.orderbook.constants.ExecutionType;
 import com.example.orderbook.constants.OrderEntryStatus;
+import com.example.orderbook.constants.OrderType;
 import com.example.orderbook.entities.Execution;
 import com.example.orderbook.entities.OrderEntry;
 import com.example.orderbook.entities.OrderBook;
@@ -47,7 +49,8 @@ public class OrderService {
 
     public List<OrderEntry> processExecution(Execution execution) {
         logger.info("processing execution " + execution);
-        List<OrderEntry> orders = orderRepository.findByStatusAndFinancialInstrumendIdOrderByEntryDateAsc(OrderEntryStatus.OPEN, execution.getFinancialInstrumendId());
+        OrderType orderType = execution.getExecutionType().equals(ExecutionType.OFFER) ? OrderType.BUY : OrderType.SELL;
+        List<OrderEntry> orders = orderRepository.findByStatusAndFinancialInstrumendIdAndOrderTypeOrderByEntryDateAsc(OrderEntryStatus.OPEN, execution.getFinancialInstrumendId(), orderType);
         logger.info("these orders are matching the instrument : " + orders);
         List<OrderEntry> affectedOrders = orderProcessor.processExecution(orders, execution);
         logger.info("these orders have been affected by the execution : " + affectedOrders);

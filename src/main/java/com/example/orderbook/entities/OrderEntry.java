@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -20,7 +21,7 @@ public class OrderEntry {
     @Column(nullable = false)
     private BigDecimal quantity;
     @Column(nullable = false)
-    private LocalDate entryDate;
+    private LocalDateTime entryDate;
     @Column(length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderType orderType;
@@ -30,6 +31,19 @@ public class OrderEntry {
     @Enumerated(EnumType.STRING)
     private OrderEntryStatus status;
 
+    public OrderEntry(Long id, String financialInstrumendId, BigDecimal quantity, LocalDateTime entryDate, OrderType orderType, BigDecimal price, OrderEntryStatus status) {
+        this.id = id;
+        this.financialInstrumendId = financialInstrumendId;
+        this.quantity = quantity;
+        this.entryDate = entryDate;
+        this.orderType = orderType;
+        this.price = price;
+        this.status = status;
+    }
+
+    public OrderEntry() {
+
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -56,11 +70,11 @@ public class OrderEntry {
         this.quantity = quantity;
     }
 
-    public LocalDate getEntryDate() {
+    public LocalDateTime getEntryDate() {
         return entryDate;
     }
 
-    public void setEntryDate(LocalDate entryDate) {
+    public void setEntryDate(LocalDateTime entryDate) {
         this.entryDate = entryDate;
     }
 
@@ -115,4 +129,6 @@ public class OrderEntry {
     public void setStatus(OrderEntryStatus status) {
         this.status = status;
     }
+
+
 }

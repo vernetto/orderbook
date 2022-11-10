@@ -22,6 +22,16 @@ public class Execution {
     @Enumerated(EnumType.STRING)
     private ExecutionType executionType;
 
+    public Execution() {
+    }
+
+    public Execution(Long id, String financialInstrumendId, BigDecimal quantity, BigDecimal price, ExecutionType executionType) {
+        this.id = id;
+        this.financialInstrumendId = financialInstrumendId;
+        this.quantity = quantity;
+        this.price = price;
+        this.executionType = executionType;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -75,4 +85,7 @@ public class Execution {
         sb.append('}');
         return sb.toString();
     }
+
+
+
 }
