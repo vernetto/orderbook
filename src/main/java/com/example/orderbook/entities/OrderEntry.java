@@ -3,9 +3,10 @@ package com.example.orderbook.entities;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
-public class OrderEntity {
+public class OrderEntry {
     @Id
     @GeneratedValue
     private Long id;
@@ -16,13 +17,10 @@ public class OrderEntity {
     @Column
     private LocalDate entryDate;
     @Column
+    @Enumerated(EnumType.STRING)
     private OrderType orderType;
     @Column
     private BigDecimal price;
-
-
-    @ManyToOne
-    private OrderBookEntity orderBookEntity;
 
 
     public void setId(Long id) {
@@ -74,11 +72,30 @@ public class OrderEntity {
         this.price = price;
     }
 
-    public OrderBookEntity getOrderBook() {
-        return orderBookEntity;
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Order{");
+        sb.append("id=").append(id);
+        sb.append(", financialInstrumendId='").append(financialInstrumendId).append('\'');
+        sb.append(", quantity=").append(quantity);
+        sb.append(", entryDate=").append(entryDate);
+        sb.append(", orderType=").append(orderType);
+        sb.append(", price=").append(price);
+        sb.append('}');
+        return sb.toString();
     }
 
-    public void setOrderBook(OrderBookEntity orderBookEntity) {
-        this.orderBookEntity = orderBookEntity;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderEntry orderEntry = (OrderEntry) o;
+        return id.equals(orderEntry.id) && financialInstrumendId.equals(orderEntry.financialInstrumendId) && quantity.equals(orderEntry.quantity) && entryDate.equals(orderEntry.entryDate) && orderType == orderEntry.orderType && price.equals(orderEntry.price) ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, financialInstrumendId, quantity, entryDate, orderType, price);
     }
 }

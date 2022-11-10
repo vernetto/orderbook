@@ -1,16 +1,14 @@
 package com.example.orderbook.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class OrderBookEntity {
+public class OrderBook {
     @Id
     @GeneratedValue
     private Long id;
     @Column
+    @Enumerated(EnumType.STRING)
     private OrderBookStatus status;
 
     public void setId(Long id) {
@@ -30,5 +28,12 @@ public class OrderBookEntity {
         this.status = orderBookStatus;
     }
 
+    public boolean isOpen() {
+        return OrderBookStatus.OPEN.equals(this.status);
+    }
+
+    public boolean isClosed() {
+        return OrderBookStatus.CLOSED.equals(this.status);
+    }
 
 }

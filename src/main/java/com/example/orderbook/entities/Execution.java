@@ -1,13 +1,10 @@
 package com.example.orderbook.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-public class ExecutionEntity {
+public class Execution {
     @Id
     @GeneratedValue
     private Long id;
@@ -18,6 +15,7 @@ public class ExecutionEntity {
     @Column
     private BigDecimal price;
     @Column
+    @Enumerated(EnumType.STRING)
     private ExecutionType executionType;
 
 
