@@ -1,4 +1,4 @@
-package com.example.orderbook.entities;
+package com.example.orderbook.constants;
 
 public enum OrderType {
     BUY,

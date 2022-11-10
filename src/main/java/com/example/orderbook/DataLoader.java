@@ -1,7 +1,7 @@
 package com.example.orderbook;
 
 import com.example.orderbook.entities.OrderBook;
-import com.example.orderbook.entities.OrderBookStatus;
+import com.example.orderbook.constants.OrderBookStatus;
 import com.example.orderbook.repositories.OrderBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;

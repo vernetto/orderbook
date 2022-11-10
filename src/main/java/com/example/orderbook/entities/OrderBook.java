@@ -1,5 +1,7 @@
 package com.example.orderbook.entities;
 
+import com.example.orderbook.constants.OrderBookStatus;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,7 +9,7 @@ public class OrderBook {
     @Id
     @GeneratedValue
     private Long id;
-    @Column
+    @Column(length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderBookStatus status;
 
