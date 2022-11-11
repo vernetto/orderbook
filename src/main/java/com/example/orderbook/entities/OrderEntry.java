@@ -165,6 +165,13 @@ public class OrderEntry {
         return this.isOpen() && this.isBuy() && this.getPrice().compareTo(executionPrice) >= 0;
     }
 
+    /**
+     * Returns the buy/sell price at which an order is filled given an executionPrice
+     */
+    public BigDecimal fillPrice(BigDecimal executionPrice) {
+        return this.isBuy() ? executionPrice : this.getPrice();
+    }
+
     public boolean acceptAsk(BigDecimal executionPrice) {
         // order.price = 4, executionProce = 5 -> OK
         return this.isOpen() &&  this.isSell() && this.getPrice().compareTo(executionPrice) <= 0;

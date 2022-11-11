@@ -40,7 +40,14 @@ public class OrderController {
 
     @PostMapping("/processExecution")
     public void processExecution(@RequestBody Execution execution) throws OrderBookException {
+        execution.setId(null);
         orderService.processExecution(execution);
+        // If all orders have been completed, a simple “execution report” shall be presented
+        if (orderService.allOrdersCompleted()) {
+            orderService.generateExecutionReport();
+            orderService.closeAllFilledOrders();
+        }
+
     }
 
     @PostMapping("/openOrderBook")

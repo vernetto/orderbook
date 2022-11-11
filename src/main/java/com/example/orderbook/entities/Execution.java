@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@ApiModel(description="Execution of a trade on an OrderEntry")
+@ApiModel(description="Execution of a trade on a set of open OrderEntry")
 public class Execution {
     @Id
     @GeneratedValue(generator="execution_seq")

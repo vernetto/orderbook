@@ -4,6 +4,7 @@ import com.example.orderbook.constants.ExecutionType;
 import com.example.orderbook.constants.OrderEntryStatus;
 import com.example.orderbook.constants.OrderType;
 import com.example.orderbook.entities.Execution;
+import com.example.orderbook.entities.ExecutionHistory;
 import com.example.orderbook.entities.OrderEntry;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,8 @@ class OrderProcessorTest {
         List<OrderEntry> orders = getOrderEntries();
         Execution execution = new Execution(1L, ISIN_1, BigDecimal.valueOf(60), BigDecimal.valueOf(5.5), ExecutionType.OFFER);
         List<OrderEntry> affectedOrders = new ArrayList<>();
-        orderProcessor.processExecution(orders, execution, affectedOrders);
+        List<ExecutionHistory> executionHistoryList = new ArrayList<>();
+        orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
         assertEquals(1, affectedOrders.size());
         OrderEntry affectedOrderEntry1 = affectedOrders.get(0);
         assertEquals(2L, affectedOrderEntry1.getId());
@@ -50,7 +52,8 @@ class OrderProcessorTest {
         // execution price too high, execution rejected
         Execution execution = new Execution(1L, ISIN_1, BigDecimal.valueOf(60), BigDecimal.valueOf(7), ExecutionType.OFFER);
         List<OrderEntry> affectedOrders = new ArrayList<>();
-        orderProcessor.processExecution(orders, execution, affectedOrders);
+        List<ExecutionHistory> executionHistoryList = new ArrayList<>();
+        orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
         assertEquals(0, affectedOrders.size());
     }
 
@@ -60,7 +63,8 @@ class OrderProcessorTest {
         // execution will fill both orders
         Execution execution = new Execution(1L, ISIN_1, BigDecimal.valueOf(200), BigDecimal.valueOf(5), ExecutionType.OFFER);
         List<OrderEntry> affectedOrders = new ArrayList<>();
-        orderProcessor.processExecution(orders, execution, affectedOrders);
+        List<ExecutionHistory> executionHistoryList = new ArrayList<>();
+        orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
         assertEquals(2, affectedOrders.size());
         OrderEntry affectedOrderEntry2_1 = affectedOrders.get(0);
         OrderEntry affectedOrderEntry2_2 = affectedOrders.get(1);
@@ -78,7 +82,8 @@ class OrderProcessorTest {
         // execution price too high, execution rejected
         Execution execution = new Execution(1L, ISIN_2, BigDecimal.valueOf(60), BigDecimal.valueOf(2), ExecutionType.ASK);
         List<OrderEntry> affectedOrders = new ArrayList<>();
-        orderProcessor.processExecution(orders, execution, affectedOrders);
+        List<ExecutionHistory> executionHistoryList = new ArrayList<>();
+        orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
         assertEquals(0, affectedOrders.size());
     }
 
@@ -88,7 +93,8 @@ class OrderProcessorTest {
         // execution will fill both orders
         Execution execution = new Execution(1L, ISIN_2, BigDecimal.valueOf(200), BigDecimal.valueOf(5), ExecutionType.ASK);
         List<OrderEntry> affectedOrders = new ArrayList<>();
-        orderProcessor.processExecution(orders, execution, affectedOrders);
+        List<ExecutionHistory> executionHistoryList = new ArrayList<>();
+        orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
         assertEquals(2, affectedOrders.size());
         OrderEntry affectedOrderEntry2_1 = affectedOrders.get(0);
         OrderEntry affectedOrderEntry2_2 = affectedOrders.get(1);

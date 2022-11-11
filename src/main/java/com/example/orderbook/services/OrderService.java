@@ -5,10 +5,13 @@ import com.example.orderbook.constants.OrderBookStatus;
 import com.example.orderbook.constants.OrderEntryStatus;
 import com.example.orderbook.constants.OrderType;
 import com.example.orderbook.entities.Execution;
+import com.example.orderbook.entities.ExecutionHistory;
 import com.example.orderbook.entities.OrderBook;
 import com.example.orderbook.entities.OrderEntry;
 import com.example.orderbook.exceptions.OrderBookException;
 import com.example.orderbook.processors.OrderProcessor;
+import com.example.orderbook.repositories.ExecutionHistoryRepository;
+import com.example.orderbook.repositories.ExecutionRepository;
 import com.example.orderbook.repositories.OrderBookRepository;
 import com.example.orderbook.repositories.OrderRepository;
 import org.slf4j.Logger;
@@ -26,12 +29,16 @@ public class OrderService {
 
     final private OrderRepository orderRepository;
     final private OrderBookRepository orderBookRepository;
+    final private ExecutionRepository executionRepository;
+    final private ExecutionHistoryRepository executionHistoryRepository;
     final private OrderProcessor orderProcessor;
 
-    public OrderService(OrderRepository orderRepository, OrderBookRepository orderBookRepository, OrderProcessor orderProcessor) {
+    public OrderService(OrderRepository orderRepository, OrderBookRepository orderBookRepository, OrderProcessor orderProcessor, ExecutionRepository executionRepository, ExecutionHistoryRepository executionHistoryRepository) {
         this.orderRepository = orderRepository;
         this.orderBookRepository = orderBookRepository;
         this.orderProcessor = orderProcessor;
+        this.executionRepository = executionRepository;
+        this.executionHistoryRepository = executionHistoryRepository;
     }
 
     public OrderEntry createOrder(OrderEntry orderEntry) throws OrderBookException {
@@ -59,8 +66,11 @@ public class OrderService {
         List<OrderEntry> orders = orderRepository.findByStatusAndFinancialInstrumendIdAndOrderTypeOrderByEntryDateAsc(OrderEntryStatus.OPEN, execution.getFinancialInstrumendId(), orderType);
         logger.info("these orders are matching the instrument : " + orders);
         List<OrderEntry> affectedOrders = new ArrayList<>();
-        orderProcessor.processExecution(orders, execution, affectedOrders);
+        List<ExecutionHistory> executionHistoryList = new ArrayList<>();
+        orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
+        executionRepository.save(execution);
         orderRepository.saveAll(affectedOrders);
+        executionHistoryRepository.saveAll(executionHistoryList);
         logger.info("these orders have been affected by the execution : " + affectedOrders);
         return affectedOrders;
     }
@@ -89,11 +99,48 @@ public class OrderService {
         logger.info("closed orderbook");
     }
 
+    /**
+     * You can open OrderBook only if all Orders are CLOSED
+     * @throws OrderBookException
+     */
     public void openOrderBook() throws OrderBookException {
         logger.info("opening orderbook");
+        List<OrderEntry> ordersNotClosed = getOrdersNotClosed();
+        if (!ordersNotClosed.isEmpty()) {
+            logger.warn("not closed orders : " + ordersNotClosed);
+            throw new OrderBookException(ERR_004, "unable to open orderbook, there are " + ordersNotClosed.size() + " not closed orders");
+        }
         OrderBook orderBook = getOrderBook();
         orderBook.setStatus(OrderBookStatus.OPEN);
         orderBookRepository.save(orderBook);
         logger.info("opened orderbook");
+    }
+
+    public boolean canCloseOrderBook() {
+        List<OrderEntry> ordersNotClosed = getOrdersNotClosed();
+        return ordersNotClosed.isEmpty();
+    }
+
+    private List<OrderEntry> getOrdersNotClosed() {
+        List<OrderEntry> ordersNotClosed = orderRepository.findByStatusNot(OrderEntryStatus.CLOSED);
+        return ordersNotClosed;
+    }
+
+    public boolean allOrdersCompleted() {
+        return getOrdersOpen().isEmpty();
+    }
+
+    public List<OrderEntry> getOrdersOpen() {
+        List<OrderEntry> ordersOpen = orderRepository.findByStatus(OrderEntryStatus.OPEN);
+        return ordersOpen;
+    }
+
+
+    public void generateExecutionReport() {
+        // TODO
+    }
+
+    public void closeAllFilledOrders() {
+        // TODO
     }
 }

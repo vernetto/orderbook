@@ -45,3 +45,9 @@ CHECK constraint in DB
 in RestController: 
 @ResponseStatus(HttpStatus.CREATED)
 @Valid 
+
+add https://spring.io/guides/tutorials/rest/  @ControllerAdvice @ExceptionHandler
+and change PUT to use @PutMapping("/employees/{id}")
+ResponseEntity<?> replaceEmployee(@RequestBody Employe
+
+
