@@ -34,6 +34,9 @@ public class OrderEntry {
     @Enumerated(EnumType.STRING)
     private OrderEntryStatus status;
 
+    @ManyToOne
+    OrderBook orderBook;
+
     public OrderEntry(Long id, String financialInstrumendId, BigDecimal quantity, BigDecimal availableQuantity, LocalDateTime entryDate, OrderType orderType, BigDecimal price, OrderEntryStatus status) {
         this.id = id;
         this.financialInstrumendId = financialInstrumendId;
@@ -106,6 +109,14 @@ public class OrderEntry {
         this.availableQuantity = availableQuantity;
     }
 
+    public OrderBook getOrderBook() {
+        return orderBook;
+    }
+
+    public void setOrderBook(OrderBook orderBook) {
+        this.orderBook = orderBook;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -130,6 +141,7 @@ public class OrderEntry {
         sb.append(", orderType=").append(orderType);
         sb.append(", price=").append(price);
         sb.append(", status=").append(status);
+        sb.append(", orderBookId=").append(orderBook != null ? orderBook.getId() : "null");
         sb.append('}');
         return sb.toString();
     }

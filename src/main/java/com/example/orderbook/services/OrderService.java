@@ -47,6 +47,7 @@ public class OrderService {
         if (orderBook.isClosed()) {
             throw new OrderBookException(ERR_001, "order book is closed, unable to add order");
         }
+        orderEntry.setOrderBook(orderBook);
         orderRepository.save(orderEntry);
         logger.info("order successfully saved " + orderEntry);
         return orderEntry;
@@ -85,6 +86,9 @@ public class OrderService {
     public void updateOrder(OrderEntry orderEntry) throws OrderBookException {
         logger.info("updating order " + orderEntry);
         OrderEntry orderEntryToUpdate = orderRepository.findById(orderEntry.getId()).orElseThrow(() -> new OrderBookException(ERR_003, "cannot find Order with id " + orderEntry.getId()));
+        if (!orderEntryToUpdate.isOpen()) {
+            throw new OrderBookException(ERR_005, "order is not open : " + orderEntryToUpdate);
+        }
         orderEntryToUpdate.update(orderEntry);
         orderRepository.save(orderEntryToUpdate);
         logger.info("updated order " + orderEntry);
@@ -137,10 +141,14 @@ public class OrderService {
 
 
     public void generateExecutionReport() {
+        logger.info("BEGIN generateExecutionReport");
         // TODO
+        logger.info("END generateExecutionReport");
     }
 
     public void closeAllFilledOrders() {
+        logger.info("BEGIN closeAllFilledOrders");
         // TODO
+        logger.info("END closeAllFilledOrders");
     }
 }
