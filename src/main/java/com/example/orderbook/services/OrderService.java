@@ -44,7 +44,7 @@ public class OrderService {
     }
 
     public OrderBook getOrderBook() throws OrderBookException {
-        OrderBook orderBook = orderBookRepository.findById(1L).orElseThrow(() -> new OrderBookException("no order book available, unable to add order"));
+        OrderBook orderBook = orderBookRepository.findById(1L).orElseThrow(() -> new OrderBookException("no order book available"));
         return orderBook;
     }
 

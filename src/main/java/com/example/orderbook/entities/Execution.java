@@ -10,7 +10,8 @@ import java.math.BigDecimal;
 @ApiModel(description="Execution of a trade on an OrderEntry")
 public class Execution {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator="execution_seq")
+    @SequenceGenerator(name="execution_seq",sequenceName="EXECUTION_SEQ", allocationSize=1, initialValue = 1)
     private Long id;
     @Column(length = 50, nullable = false)
     private String financialInstrumendId;

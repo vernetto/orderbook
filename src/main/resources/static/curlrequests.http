@@ -1,0 +1,75 @@
+
+# curl -X POST "http://localhost:8080/createOrder" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"availableQuantity\": 100,  \"entryDate\": \"2022-11-11T10:42:23.740Z\",  \"financialInstrumendId\": \"ISIN1\",  \"id\": 0,  \"orderType\": \"BUY\",  \"price\": 5,  \"quantity\": 100,  \"status\": \"OPEN\"}"
+POST http://localhost:8080/createOrder
+accept: */*
+Content-Type: application/json
+
+{
+  "availableQuantity": 100,
+  "entryDate": "2022-11-11T10:42:23.740Z",
+  "financialInstrumendId": "ISIN1",
+  "id": 0,
+  "orderType": "BUY",
+  "price": 5,
+  "quantity": 100,
+  "status": "OPEN"
+}
+
+###
+
+
+POST http://localhost:8080/createOrder
+accept: */*
+Content-Type: application/json
+
+{
+  "availableQuantity": 100,
+  "entryDate": "2022-11-11T10:45:23.740Z",
+  "financialInstrumendId": "ISIN1",
+  "id": 0,
+  "orderType": "BUY",
+  "price": 6,
+  "quantity": 100,
+  "status": "OPEN"
+}
+
+###
+
+
+POST http://localhost:8080/createOrder
+accept: */*
+Content-Type: application/json
+
+{
+"availableQuantity": 50,
+"entryDate": "2022-11-11T10:45:23.740Z",
+"financialInstrumendId": "ISIN2",
+"id": 0,
+"orderType": "SELL",
+"price": 6,
+"quantity": 50,
+"status": "OPEN"
+}
+
+###
+
+
+
+POST http://localhost:8080/createOrder
+accept: */*
+Content-Type: application/json
+
+{
+  "availableQuantity": 50,
+  "entryDate": "2022-11-11T10:47:23.740Z",
+  "financialInstrumendId": "ISIN2",
+  "id": 0,
+  "orderType": "SELL",
+  "price": 6,
+  "quantity": 50,
+  "status": "OPEN"
+}
+
+###
+
+

@@ -14,7 +14,8 @@ import java.util.Objects;
 @ApiModel(description="Order to be filled by executions")
 public class OrderEntry {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator="orderentry_seq")
+    @SequenceGenerator(name="orderentry_seq",sequenceName="ORDERENTRY_SEQ", allocationSize=1, initialValue = 1)
     private Long id;
     @Column(length = 50, nullable = false)
     private String financialInstrumendId;

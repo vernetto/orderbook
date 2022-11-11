@@ -7,7 +7,8 @@ import javax.persistence.*;
 @Entity
 public class OrderBook {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator="orderbook_seq")
+    @SequenceGenerator(name="orderbook_seq",sequenceName="ORDERBOOK_SEQ", allocationSize=1, initialValue = 1)
     private Long id;
     @Column(length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
