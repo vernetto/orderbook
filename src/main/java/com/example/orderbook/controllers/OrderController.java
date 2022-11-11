@@ -43,5 +43,8 @@ public class OrderController {
         orderService.processExecution(execution);
     }
 
-
+    @PostMapping("/openOrderBook")
+    public void openOrderBook() throws OrderBookException {
+        orderService.openOrderBook();
+    }
 }

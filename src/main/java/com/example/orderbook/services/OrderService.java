@@ -60,6 +60,7 @@ public class OrderService {
         logger.info("these orders are matching the instrument : " + orders);
         List<OrderEntry> affectedOrders = new ArrayList<>();
         orderProcessor.processExecution(orders, execution, affectedOrders);
+        orderRepository.saveAll(affectedOrders);
         logger.info("these orders have been affected by the execution : " + affectedOrders);
         return affectedOrders;
     }
@@ -86,6 +87,13 @@ public class OrderService {
         orderBook.setStatus(OrderBookStatus.CLOSED);
         orderBookRepository.save(orderBook);
         logger.info("closed orderbook");
+    }
 
+    public void openOrderBook() throws OrderBookException {
+        logger.info("opening orderbook");
+        OrderBook orderBook = getOrderBook();
+        orderBook.setStatus(OrderBookStatus.OPEN);
+        orderBookRepository.save(orderBook);
+        logger.info("opened orderbook");
     }
 }
