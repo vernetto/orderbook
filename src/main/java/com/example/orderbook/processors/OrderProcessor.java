@@ -31,21 +31,24 @@ public class OrderProcessor {
      * @return a List of affected ordersToProcess
      */
     public void processExecution(List<OrderEntry> ordersToProcess, Execution execution, List<OrderEntry> affectedOrders) {
-        // only ISINs matching the execution ISIN should be considered
-        List<OrderEntry> filteredOrdersToProcess = ordersToProcess.stream().filter(orderEntry -> orderEntry.getFinancialInstrumendId().equals(execution.getFinancialInstrumendId())).collect(Collectors.toList());
+        // only ISINs matching the execution ISIN should be considered, and ordertype should match execution type, and order accepts execution price
+        List<OrderEntry> filteredOrdersToProcess = ordersToProcess.stream().filter(
+                orderEntry -> (
+                        orderEntry.getFinancialInstrumendId().equals(execution.getFinancialInstrumendId()) &&
+                                (execution.isAsk() ? orderEntry.isSell() : orderEntry.isBuy()) &&
+                                (execution.isOffer() ? orderEntry.acceptOffer(execution.getPrice()) : orderEntry.acceptAsk(execution.getPrice()))
+                )
+        ).collect(Collectors.toList());
+
         BigDecimal totalQuantityToAllocate = execution.getQuantity();
         for (OrderEntry orderEntry : filteredOrdersToProcess) {
-            boolean canProcessOrder = execution.isOffer() ? orderEntry.acceptOffer(execution.getPrice()) : orderEntry.acceptAsk(execution.getPrice());
-            canProcessOrder = canProcessOrder && (orderEntry.getFinancialInstrumendId().equals(execution.getFinancialInstrumendId()));
-            if (canProcessOrder) {
-                BigDecimal quantityToAllocate = orderEntry.getAvailableQuantity().min(totalQuantityToAllocate);
-                totalQuantityToAllocate = totalQuantityToAllocate.subtract(quantityToAllocate);
-                orderEntry.setAvailableQuantity(orderEntry.getAvailableQuantity().subtract(quantityToAllocate));
-                if (orderEntry.getAvailableQuantity().compareTo(BigDecimal.ZERO) == 0) {
-                    orderEntry.setStatus(OrderEntryStatus.FILLED);
-                }
-                affectedOrders.add(orderEntry);
+            BigDecimal quantityToAllocate = orderEntry.getAvailableQuantity().min(totalQuantityToAllocate);
+            totalQuantityToAllocate = totalQuantityToAllocate.subtract(quantityToAllocate);
+            orderEntry.setAvailableQuantity(orderEntry.getAvailableQuantity().subtract(quantityToAllocate));
+            if (orderEntry.getAvailableQuantity().compareTo(BigDecimal.ZERO) == 0) {
+                orderEntry.setStatus(OrderEntryStatus.FILLED);
             }
+            affectedOrders.add(orderEntry);
             if (totalQuantityToAllocate.compareTo(BigDecimal.ZERO) == 0) {
                 break;
             }

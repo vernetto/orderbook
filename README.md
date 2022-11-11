@@ -5,6 +5,9 @@ H2 console: http://localhost:8080/h2-console/ connect as Generic H2 (Embedded), 
 
 Swagger: http://localhost:8080/v2/api-docs  http://localhost:8080/swagger-ui/index.html#/order-controller
 
+Unittests are modelled in src/main/resources/static/ordermodel.ods  (you need Apache Open Office or Excel to view it)
+
+
 
 # Remarks
 
