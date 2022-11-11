@@ -32,4 +32,10 @@ public class OrderController {
         orderService.updateOrder(orderEntry);
     }
 
+    @PostMapping("/closeOrderBook")
+    public void closeOrderBook() throws OrderBookException {
+        orderService.closeOrderBook();
+    }
+
+
 }

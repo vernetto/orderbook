@@ -112,3 +112,11 @@ DELETE http://localhost:8080/deleteOrder?id=5
 
 ###
 
+POST http://localhost:8080/closeOrderBook
+accept: */*
+Content-Type: application/json
+
+{
+}
+
+

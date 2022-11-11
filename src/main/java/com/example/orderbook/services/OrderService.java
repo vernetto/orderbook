@@ -1,11 +1,12 @@
 package com.example.orderbook.services;
 
 import com.example.orderbook.constants.ExecutionType;
+import com.example.orderbook.constants.OrderBookStatus;
 import com.example.orderbook.constants.OrderEntryStatus;
 import com.example.orderbook.constants.OrderType;
 import com.example.orderbook.entities.Execution;
-import com.example.orderbook.entities.OrderEntry;
 import com.example.orderbook.entities.OrderBook;
+import com.example.orderbook.entities.OrderEntry;
 import com.example.orderbook.exceptions.OrderBookException;
 import com.example.orderbook.processors.OrderProcessor;
 import com.example.orderbook.repositories.OrderBookRepository;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -44,7 +44,7 @@ public class OrderService {
         return orderEntry;
     }
 
-    public OrderBook getOrderBook() throws OrderBookException {
+    private OrderBook getOrderBook() throws OrderBookException {
         OrderBook orderBook = orderBookRepository.findById(1L).orElseThrow(() -> new OrderBookException("no order book available"));
         return orderBook;
     }
@@ -68,8 +68,20 @@ public class OrderService {
     }
 
     public void updateOrder(OrderEntry orderEntry) throws OrderBookException {
+        logger.info("updating order " + orderEntry);
         OrderEntry orderEntryToUpdate = orderRepository.findById(orderEntry.getId()).orElseThrow(() -> new OrderBookException("cannot find Order with id " + orderEntry.getId()));
         orderEntryToUpdate.update(orderEntry);
         orderRepository.save(orderEntryToUpdate);
+        logger.info("updated order " + orderEntry);
+    }
+
+
+    public void closeOrderBook() throws OrderBookException {
+        logger.info("closing orderbook");
+        OrderBook orderBook = getOrderBook();
+        orderBook.setStatus(OrderBookStatus.CLOSED);
+        orderBookRepository.save(orderBook);
+        logger.info("closed orderbook");
+
     }
 }
