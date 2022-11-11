@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class OrderProcessor {
@@ -30,9 +31,12 @@ public class OrderProcessor {
      * @return a List of affected ordersToProcess
      */
     public void processExecution(List<OrderEntry> ordersToProcess, Execution execution, List<OrderEntry> affectedOrders) {
+        // only ISINs matching the execution ISIN should be considered
+        List<OrderEntry> filteredOrdersToProcess = ordersToProcess.stream().filter(orderEntry -> orderEntry.getFinancialInstrumendId().equals(execution.getFinancialInstrumendId())).collect(Collectors.toList());
         BigDecimal totalQuantityToAllocate = execution.getQuantity();
-        for (OrderEntry orderEntry : ordersToProcess) {
+        for (OrderEntry orderEntry : filteredOrdersToProcess) {
             boolean canProcessOrder = execution.isOffer() ? orderEntry.acceptOffer(execution.getPrice()) : orderEntry.acceptAsk(execution.getPrice());
+            canProcessOrder = canProcessOrder && (orderEntry.getFinancialInstrumendId().equals(execution.getFinancialInstrumendId()));
             if (canProcessOrder) {
                 BigDecimal quantityToAllocate = orderEntry.getAvailableQuantity().min(totalQuantityToAllocate);
                 totalQuantityToAllocate = totalQuantityToAllocate.subtract(quantityToAllocate);
