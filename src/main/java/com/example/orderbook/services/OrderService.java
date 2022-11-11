@@ -63,6 +63,8 @@ public class OrderService {
         if (!orderBook.isClosed()) {
             throw new OrderBookException(ERR_001, "order book is not closed, unable to process execution");
         }
+        execution.setOrderBook(orderBook);
+
         OrderType orderType = execution.getExecutionType().equals(ExecutionType.OFFER) ? OrderType.BUY : OrderType.SELL;
         List<OrderEntry> orders = orderRepository.findByStatusAndFinancialInstrumendIdAndOrderTypeOrderByEntryDateAsc(OrderEntryStatus.OPEN, execution.getFinancialInstrumendId(), orderType);
         logger.info("these orders are matching the instrument : " + orders);

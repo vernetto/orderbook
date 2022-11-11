@@ -22,6 +22,8 @@ public class Execution {
     @Column(length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
     private ExecutionType executionType;
+    @ManyToOne
+    OrderBook orderBook;
 
     public Execution() {
     }
@@ -75,6 +77,14 @@ public class Execution {
         this.executionType = executionType;
     }
 
+    public OrderBook getOrderBook() {
+        return orderBook;
+    }
+
+    public void setOrderBook(OrderBook orderBook) {
+        this.orderBook = orderBook;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Execution{");
@@ -83,6 +93,7 @@ public class Execution {
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
         sb.append(", executionType=").append(executionType);
+        sb.append(", orderBookId=").append(orderBook != null ? orderBook.getId() : "null");
         sb.append('}');
         return sb.toString();
     }
