@@ -1,5 +1,6 @@
 package com.example.orderbook.controllers;
 
+import com.example.orderbook.entities.Execution;
 import com.example.orderbook.entities.OrderEntry;
 import com.example.orderbook.exceptions.OrderBookException;
 import com.example.orderbook.services.OrderService;
@@ -35,6 +36,11 @@ public class OrderController {
     @PostMapping("/closeOrderBook")
     public void closeOrderBook() throws OrderBookException {
         orderService.closeOrderBook();
+    }
+
+    @PostMapping("/processExecution")
+    public void processExecution(@RequestBody Execution execution) throws OrderBookException {
+        orderService.processExecution(execution);
     }
 
 

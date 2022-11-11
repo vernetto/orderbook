@@ -119,4 +119,23 @@ Content-Type: application/json
 {
 }
 
+###
+
+
+# curl -X POST "http://localhost:8080/processExecution" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"executionType\": \"OFFER\",  \"financialInstrumendId\": \"ISIN1\",  \"id\": 0,  \"price\": 5.5,  \"quantity\": 50}"
+POST http://localhost:8080/processExecution
+accept: */*
+Content-Type: application/json
+
+{
+  "executionType": "OFFER",
+  "financialInstrumendId": "ISIN1",
+  "id": 0,
+  "price": 5.5,
+  "quantity": 50
+}
+
+###
+
+
 

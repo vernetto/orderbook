@@ -18,14 +18,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.orderbook.exceptions.ExceptionCode.*;
+
 @Service
 public class OrderService {
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
-    private OrderRepository orderRepository;
-    private OrderBookRepository orderBookRepository;
-
-    private OrderProcessor orderProcessor;
+    final private OrderRepository orderRepository;
+    final private OrderBookRepository orderBookRepository;
+    final private OrderProcessor orderProcessor;
 
     public OrderService(OrderRepository orderRepository, OrderBookRepository orderBookRepository, OrderProcessor orderProcessor) {
         this.orderRepository = orderRepository;
@@ -37,7 +38,7 @@ public class OrderService {
         logger.info("creating order " + orderEntry);
         OrderBook orderBook = getOrderBook();
         if (orderBook.isClosed()) {
-            throw new OrderBookException("order book is closed, unable to add order");
+            throw new OrderBookException(ERR_001, "order book is closed, unable to add order");
         }
         orderRepository.save(orderEntry);
         logger.info("order successfully saved " + orderEntry);
@@ -45,12 +46,15 @@ public class OrderService {
     }
 
     private OrderBook getOrderBook() throws OrderBookException {
-        OrderBook orderBook = orderBookRepository.findById(1L).orElseThrow(() -> new OrderBookException("no order book available"));
-        return orderBook;
+        return orderBookRepository.findById(1L).orElseThrow(() -> new OrderBookException(ERR_002, "no order book available"));
     }
 
-    public List<OrderEntry> processExecution(Execution execution) {
+    public List<OrderEntry> processExecution(Execution execution) throws OrderBookException {
         logger.info("processing execution " + execution);
+        OrderBook orderBook = getOrderBook();
+        if (!orderBook.isClosed()) {
+            throw new OrderBookException(ERR_001, "order book is not closed, unable to process execution");
+        }
         OrderType orderType = execution.getExecutionType().equals(ExecutionType.OFFER) ? OrderType.BUY : OrderType.SELL;
         List<OrderEntry> orders = orderRepository.findByStatusAndFinancialInstrumendIdAndOrderTypeOrderByEntryDateAsc(OrderEntryStatus.OPEN, execution.getFinancialInstrumendId(), orderType);
         logger.info("these orders are matching the instrument : " + orders);
@@ -69,7 +73,7 @@ public class OrderService {
 
     public void updateOrder(OrderEntry orderEntry) throws OrderBookException {
         logger.info("updating order " + orderEntry);
-        OrderEntry orderEntryToUpdate = orderRepository.findById(orderEntry.getId()).orElseThrow(() -> new OrderBookException("cannot find Order with id " + orderEntry.getId()));
+        OrderEntry orderEntryToUpdate = orderRepository.findById(orderEntry.getId()).orElseThrow(() -> new OrderBookException(ERR_003, "cannot find Order with id " + orderEntry.getId()));
         orderEntryToUpdate.update(orderEntry);
         orderRepository.save(orderEntryToUpdate);
         logger.info("updated order " + orderEntry);
