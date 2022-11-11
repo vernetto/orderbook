@@ -86,6 +86,12 @@ public class Execution {
         return sb.toString();
     }
 
+    public boolean isOffer() {
+        return ExecutionType.OFFER.equals(this.getExecutionType());
+    }
 
+    public boolean isAsk() {
+        return ExecutionType.ASK.equals(this.getExecutionType());
+    }
 
 }

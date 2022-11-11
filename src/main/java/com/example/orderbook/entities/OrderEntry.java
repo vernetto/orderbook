@@ -21,6 +21,8 @@ public class OrderEntry {
     @Column(nullable = false)
     private BigDecimal quantity;
     @Column(nullable = false)
+    private BigDecimal availableQuantity;
+    @Column(nullable = false)
     private LocalDateTime entryDate;
     @Column(length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
@@ -31,10 +33,11 @@ public class OrderEntry {
     @Enumerated(EnumType.STRING)
     private OrderEntryStatus status;
 
-    public OrderEntry(Long id, String financialInstrumendId, BigDecimal quantity, LocalDateTime entryDate, OrderType orderType, BigDecimal price, OrderEntryStatus status) {
+    public OrderEntry(Long id, String financialInstrumendId, BigDecimal quantity, BigDecimal availableQuantity, LocalDateTime entryDate, OrderType orderType, BigDecimal price, OrderEntryStatus status) {
         this.id = id;
         this.financialInstrumendId = financialInstrumendId;
         this.quantity = quantity;
+        this.availableQuantity = availableQuantity;
         this.entryDate = entryDate;
         this.orderType = orderType;
         this.price = price;
@@ -94,13 +97,25 @@ public class OrderEntry {
         this.price = price;
     }
 
+    public BigDecimal getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public void setAvailableQuantity(BigDecimal availableQuantity) {
+        this.availableQuantity = availableQuantity;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderEntry that = (OrderEntry) o;
-        return id.equals(that.id) && financialInstrumendId.equals(that.financialInstrumendId) && quantity.equals(that.quantity) && entryDate.equals(that.entryDate) && orderType == that.orderType && price.equals(that.price) && status == that.status;
+        return id.equals(that.id) && financialInstrumendId.equals(that.financialInstrumendId) && quantity.equals(that.quantity) && availableQuantity.equals(that.availableQuantity) && entryDate.equals(that.entryDate) && orderType == that.orderType && price.equals(that.price) && status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, financialInstrumendId, quantity, availableQuantity, entryDate, orderType, price, status);
     }
 
     @Override
@@ -109,17 +124,13 @@ public class OrderEntry {
         sb.append("id=").append(id);
         sb.append(", financialInstrumendId='").append(financialInstrumendId).append('\'');
         sb.append(", quantity=").append(quantity);
+        sb.append(", availableQuantity=").append(availableQuantity);
         sb.append(", entryDate=").append(entryDate);
         sb.append(", orderType=").append(orderType);
         sb.append(", price=").append(price);
         sb.append(", status=").append(status);
         sb.append('}');
         return sb.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, financialInstrumendId, quantity, entryDate, orderType, price, status);
     }
 
     public OrderEntryStatus getStatus() {
@@ -130,5 +141,36 @@ public class OrderEntry {
         this.status = status;
     }
 
+    public boolean isOpen() {
+        return OrderEntryStatus.OPEN.equals(this.getStatus());
+    }
+    public boolean isFilled() {
+        return OrderEntryStatus.FILLED.equals(this.getStatus());
+    }
+    public boolean isClosed() {
+        return OrderEntryStatus.CLOSED.equals(this.getStatus());
+    }
+
+    public boolean isBuy() {
+        return OrderType.BUY.equals(this.getOrderType());
+    }
+
+    public boolean isSell() {
+        return OrderType.SELL.equals(this.getOrderType());
+    }
+
+    public boolean acceptOffer(BigDecimal executionPrice) {
+        // order.price = 5, executionProce = 5.5 -> OK
+        return this.isOpen() && this.isBuy() && this.getPrice().compareTo(executionPrice) >= 0;
+    }
+
+    public boolean acceptAsk(BigDecimal executionPrice) {
+        // order.price = 4, executionProce = 5 -> OK
+        return this.isOpen() &&  this.isSell() && this.getPrice().compareTo(executionPrice) <= 0;
+    }
+
+    public BigDecimal computeExecutionPrice(BigDecimal executionPrice) {
+        return this.isBuy() ? executionPrice : this.getPrice();
+    }
 
 }

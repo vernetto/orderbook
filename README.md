@@ -38,3 +38,6 @@ foe Entities, for each column add
 
 CHECK constraint in DB
 
+in RestController: 
+@ResponseStatus(HttpStatus.CREATED)
+@Valid 

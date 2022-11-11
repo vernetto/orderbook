@@ -1,27 +1,51 @@
 package com.example.orderbook.processors;
 
+import com.example.orderbook.constants.OrderEntryStatus;
 import com.example.orderbook.entities.Execution;
 import com.example.orderbook.entities.OrderEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class OrderProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(OrderProcessor.class);
+
     /**
      * Process a single execution against a list of Open Orders having the same financialInstitutionId
-     *
-     * Execution quantity must be distributed among matching orders in the priority of entry date
+     * <p>
+     * Execution quantity must be distributed among matching ordersToProcess in the priority of entry date
      * Execution of type “offer” satisfies order of type “buy” while execution of type “ask” satisfies
      * order of type “sell”.
      * • Order with price lower (buy) than the execution price is not considered.
      * • Order with price higher (sell) than the execution price is not considered.
      * • Orders with financial instrument id not matching the one of the executions is not considered.
-     * @param orders
+     *
+     * @param ordersToProcess
      * @param execution
-     * @return a List of affected orders
+     * @return a List of affected ordersToProcess
      */
-    public List<OrderEntry> processExecution(List<OrderEntry> orders, Execution execution) {
-        return null;
+    public void processExecution(List<OrderEntry> ordersToProcess, Execution execution, List<OrderEntry> affectedOrders) {
+        BigDecimal totalQuantityToAllocate = execution.getQuantity();
+        for (OrderEntry orderEntry : ordersToProcess) {
+            boolean canProcessOrder = execution.isOffer() ? orderEntry.acceptOffer(execution.getPrice()) : orderEntry.acceptAsk(execution.getPrice());
+            if (canProcessOrder) {
+                BigDecimal quantityToAllocate = orderEntry.getAvailableQuantity().min(totalQuantityToAllocate);
+                totalQuantityToAllocate = totalQuantityToAllocate.subtract(quantityToAllocate);
+                orderEntry.setAvailableQuantity(orderEntry.getAvailableQuantity().subtract(quantityToAllocate));
+                if (orderEntry.getAvailableQuantity().compareTo(BigDecimal.ZERO) == 0) {
+                    orderEntry.setStatus(OrderEntryStatus.FILLED);
+                }
+                affectedOrders.add(orderEntry);
+            }
+            if (totalQuantityToAllocate.compareTo(BigDecimal.ZERO) == 0) {
+                break;
+            }
+        }
+
     }
 }

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,7 +53,8 @@ public class OrderService {
         OrderType orderType = execution.getExecutionType().equals(ExecutionType.OFFER) ? OrderType.BUY : OrderType.SELL;
         List<OrderEntry> orders = orderRepository.findByStatusAndFinancialInstrumendIdAndOrderTypeOrderByEntryDateAsc(OrderEntryStatus.OPEN, execution.getFinancialInstrumendId(), orderType);
         logger.info("these orders are matching the instrument : " + orders);
-        List<OrderEntry> affectedOrders = orderProcessor.processExecution(orders, execution);
+        List<OrderEntry> affectedOrders = new ArrayList<>();
+        orderProcessor.processExecution(orders, execution, affectedOrders);
         logger.info("these orders have been affected by the execution : " + affectedOrders);
         return affectedOrders;
     }
