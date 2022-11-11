@@ -73,3 +73,42 @@ Content-Type: application/json
 ###
 
 
+PUT http://localhost:8080/editOrder
+accept: */*
+Content-Type: application/json
+
+{
+  "availableQuantity": 40,
+  "entryDate": "2022-11-11T10:47:23.740Z",
+  "financialInstrumendId": "ISIN2",
+  "id": 4,
+  "orderType": "SELL",
+  "price": 6,
+  "quantity": 40,
+  "status": "OPEN"
+}
+
+###
+
+POST http://localhost:8080/createOrder
+accept: */*
+Content-Type: application/json
+
+{
+  "availableQuantity": 99,
+  "entryDate": "2022-11-11T10:42:23.740Z",
+  "financialInstrumendId": "ISIN1",
+  "id": 0,
+  "orderType": "BUY",
+  "price": 5,
+  "quantity": 99,
+  "status": "OPEN"
+}
+
+###
+
+
+DELETE http://localhost:8080/deleteOrder?id=5
+
+###
+

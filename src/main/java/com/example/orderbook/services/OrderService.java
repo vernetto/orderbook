@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -60,4 +61,15 @@ public class OrderService {
     }
 
 
+    public void deleteOrder(long id) {
+        logger.info("deleting order id=" + id);
+        orderRepository.deleteById(id);
+        logger.info("deleted order id=" + id);
+    }
+
+    public void updateOrder(OrderEntry orderEntry) throws OrderBookException {
+        OrderEntry orderEntryToUpdate = orderRepository.findById(orderEntry.getId()).orElseThrow(() -> new OrderBookException("cannot find Order with id " + orderEntry.getId()));
+        orderEntryToUpdate.update(orderEntry);
+        orderRepository.save(orderEntryToUpdate);
+    }
 }

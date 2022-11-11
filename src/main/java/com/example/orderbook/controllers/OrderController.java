@@ -4,10 +4,7 @@ import com.example.orderbook.entities.OrderEntry;
 import com.example.orderbook.exceptions.OrderBookException;
 import com.example.orderbook.services.OrderService;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(value = "Order Rest Controller", description = "REST API for Order")
 @RequestMapping("/")
@@ -23,6 +20,16 @@ public class OrderController {
     @PostMapping("/createOrder")
     public OrderEntry createOrder(@RequestBody OrderEntry orderEntry) throws OrderBookException {
         return orderService.createOrder(orderEntry);
+    }
+
+    @DeleteMapping("/deleteOrder")
+    public void deleteOrder(@RequestParam long id) throws OrderBookException {
+        orderService.deleteOrder(id);
+    }
+
+    @PutMapping("/editOrder")
+    public void updateOrder(@RequestBody OrderEntry orderEntry) throws OrderBookException {
+        orderService.updateOrder(orderEntry);
     }
 
 }

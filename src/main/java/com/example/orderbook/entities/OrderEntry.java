@@ -174,4 +174,18 @@ public class OrderEntry {
         return this.isBuy() ? executionPrice : this.getPrice();
     }
 
+    /**
+     * Shallow clone all properties apart from id
+     * @param otherOrder
+     */
+    public void update(OrderEntry otherOrder) {
+        this.setStatus(otherOrder.getStatus());
+        this.setQuantity(otherOrder.getQuantity());
+        this.setAvailableQuantity(otherOrder.getAvailableQuantity());
+        this.setEntryDate(otherOrder.getEntryDate());
+        this.setFinancialInstrumendId(otherOrder.getFinancialInstrumendId());
+        this.setPrice(otherOrder.getPrice());
+        this.setOrderType(otherOrder.getOrderType());
+    }
+
 }
