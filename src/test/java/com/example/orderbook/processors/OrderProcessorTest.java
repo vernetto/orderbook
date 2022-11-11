@@ -27,11 +27,14 @@ class OrderProcessorTest {
         OrderEntry orderEntry1 = new OrderEntry(1L , "ISIN1", BigDecimal.valueOf(100), BigDecimal.valueOf(100), TIME_0, OrderType.BUY, BigDecimal.valueOf(5), OrderEntryStatus.OPEN);
         OrderEntry orderEntry2 = new OrderEntry(2L , "ISIN1", BigDecimal.valueOf(100), BigDecimal.valueOf(100), TIME_1, OrderType.BUY, BigDecimal.valueOf(6), OrderEntryStatus.OPEN);
         List<OrderEntry> orders = Arrays.asList(orderEntry1, orderEntry2);
-        Execution execution =  new Execution(1L, "ISIN1", BigDecimal.valueOf(50), BigDecimal.valueOf(5.5), ExecutionType.OFFER);
+        Execution execution =  new Execution(1L, "ISIN1", BigDecimal.valueOf(60), BigDecimal.valueOf(5.5), ExecutionType.OFFER);
         List<OrderEntry> affectedOrders = new ArrayList<>();
         orderProcessor.processExecution(orders, execution, affectedOrders);
         assertNotNull(affectedOrders);
         assertEquals(1, affectedOrders.size());
+        OrderEntry orderEntry = affectedOrders.get(0);
+        assertEquals(2L, orderEntry.getId());
+        assertEquals(BigDecimal.valueOf(40), orderEntry.getAvailableQuantity());
 
     }
 }
