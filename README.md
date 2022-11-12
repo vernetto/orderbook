@@ -20,7 +20,8 @@ Security also skipped for ease of demoing
 
 In the DB the validation of enumerated columns is missing - it should be implemented by triggers of by CHECK constraint
 
-Builders not use for brevity  
+Builder pattern not use for brevity  
+
 
 # References
 
@@ -28,29 +29,6 @@ https://spring.io/guides/tutorials/rest/
 https://spring.io/guides/gs/testing-web/
 https://www.springboottutorial.com/spring-boot-swagger-documentation-for-rest-services
 
-
-
-# TODO
-
-For RestController, for each @RequestMapping:
-@ApiOperation(value = "Get Users ", response = Iterable.class, tags = "getUsers")
-@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK"), @ApiResponse(code = 401, message = "Not Authorized!"),
-@ApiResponse(code = 403, message = "Forbidden!"), @ApiResponse(code = 404, message = "Not Found!") })
-
-foe Entities, for each column add
-@ApiModelProperty(notes = "User Id",name="id",required=true,value="1")
-
-CHECK constraint in DB
-
-in RestController: 
-@ResponseStatus(HttpStatus.CREATED)
-@Valid 
-
-add https://spring.io/guides/tutorials/rest/  @ControllerAdvice @ExceptionHandler
-and change PUT to use @PutMapping("/employees/{id}")
-ResponseEntity<?> replaceEmployee(@RequestBody Employe
-
-
-https://techwithmaddy.com/replace-persistence-entity-with-a-dto-object  
+ 
 
 

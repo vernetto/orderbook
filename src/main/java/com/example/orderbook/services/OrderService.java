@@ -48,9 +48,9 @@ public class OrderService {
             throw new OrderBookException(ERR_001, "order book is closed, unable to add order");
         }
         orderEntry.setOrderBook(orderBook);
-        orderRepository.save(orderEntry);
-        logger.info("order successfully saved {}", orderEntry);
-        return orderEntry;
+        OrderEntry savedEntry = orderRepository.save(orderEntry);
+        logger.info("order successfully saved {}", savedEntry);
+        return savedEntry;
     }
 
     private OrderBook getOrderBook() throws OrderBookException {

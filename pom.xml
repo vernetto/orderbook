@@ -14,7 +14,7 @@
     <name>orderbook</name>
     <description>orderbook</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -53,6 +53,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.13.4</version>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>
