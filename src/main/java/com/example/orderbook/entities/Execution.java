@@ -87,7 +87,7 @@ public class Execution {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Execution{");
+        final StringBuilder sb = new StringBuilder("Execution{");
         sb.append("id=").append(id);
         sb.append(", financialInstrumendId='").append(financialInstrumendId).append('\'');
         sb.append(", quantity=").append(quantity);

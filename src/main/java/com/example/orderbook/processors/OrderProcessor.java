@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class OrderProcessor {
-    private static final Logger logger = LoggerFactory.getLogger(OrderProcessor.class);
 
     /**
      * Process a single execution against a list of Open Orders having the same financialInstitutionId

@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -132,7 +131,7 @@ public class OrderEntry {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("OrderEntry{");
+        final StringBuilder sb = new StringBuilder("OrderEntry{");
         sb.append("id=").append(id);
         sb.append(", financialInstrumendId='").append(financialInstrumendId).append('\'');
         sb.append(", quantity=").append(quantity);

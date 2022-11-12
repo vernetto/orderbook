@@ -5,13 +5,9 @@ public class OrderBookException extends Exception {
         return exceptionCode;
     }
 
-    public void setExceptionCode(ExceptionCode exceptionCode) {
-        this.exceptionCode = exceptionCode;
-    }
-
-    ExceptionCode exceptionCode;
+    final ExceptionCode exceptionCode;
     public OrderBookException(ExceptionCode exceptionCode, String message) {
         super(message);
-        this.setExceptionCode(exceptionCode);
+        this.exceptionCode = exceptionCode;
     }
 }

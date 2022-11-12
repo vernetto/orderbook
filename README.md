@@ -51,3 +51,6 @@ and change PUT to use @PutMapping("/employees/{id}")
 ResponseEntity<?> replaceEmployee(@RequestBody Employe
 
 
+https://techwithmaddy.com/replace-persistence-entity-with-a-dto-object  
+
+
