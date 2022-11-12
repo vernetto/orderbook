@@ -63,12 +63,23 @@ class OrderbookApplicationTests {
                 .andExpect(status().is5xxServerError());
 
         logger.info("close orderbook");
-        this.mockMvc.perform(post("/closeOrderBook").content(postBody)
+        this.mockMvc.perform(post("/closeOrderBook").content("")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
 
+
+        logger.info("create order with orderbook closed, should fail");
+        postBody = objectMapper.writeValueAsString(mockObjectFactory.getOrderEntries().get(0));
+        this.mockMvc.perform(post("/createOrder")
+                        .content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is5xxServerError());
+
+
         logger.info("BEGIN process execution, should be OK");
+        postBody = objectMapper.writeValueAsString(execution);
         this.mockMvc.perform(post("/processExecution")
                         .content(postBody)
                         .contentType(MediaType.APPLICATION_JSON))
