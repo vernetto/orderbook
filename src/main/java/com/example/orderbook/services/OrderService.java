@@ -150,7 +150,10 @@ public class OrderService {
 
     public void closeAllFilledOrders() {
         logger.info("BEGIN closeAllFilledOrders");
-        // TODO
+        List<OrderEntry> filledOrdersToClose = orderRepository.findByStatus(OrderEntryStatus.FILLED);
+        logger.info("closing {} orders", filledOrdersToClose.size());
+        filledOrdersToClose.forEach(orderEntry -> orderEntry.setStatus(OrderEntryStatus.CLOSED));
+        orderRepository.saveAll(filledOrdersToClose);
         logger.info("END closeAllFilledOrders");
     }
 }

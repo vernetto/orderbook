@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 
 import static com.example.orderbook.mocks.MockObjectFactory.ISIN_1;
+import static com.example.orderbook.mocks.MockObjectFactory.ISIN_2;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -90,6 +91,54 @@ class OrderbookApplicationTests {
         logger.info("END process execution, should be OK but no fill");
 
 
+        execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(200), BigDecimal.valueOf(4));
+        postBody = objectMapper.writeValueAsString(execution);
+        logger.info("BEGIN process execution, should be OK with 2 orders filled");
+        this.mockMvc.perform(post("/processExecution")
+                        .content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk()).andExpect(jsonPath("$[0]['filledQuantity']").value(100))
+                .andExpect(jsonPath("$[1]['filledQuantity']").value(50));
+        logger.info("END process execution, should be OK with 2 orders filled");
+
+        execution = mockObjectFactory.getExecutionOffer(ISIN_2, BigDecimal.valueOf(200), BigDecimal.valueOf(4));
+        postBody = objectMapper.writeValueAsString(execution);
+        logger.info("BEGIN process execution, should be OK with 1 order filled");
+        this.mockMvc.perform(post("/processExecution")
+                        .content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk()).andExpect(jsonPath("$[0]['filledQuantity']").value(100));
+        logger.info("END process execution, should be OK with 1 order filled");
+
+        execution = mockObjectFactory.getExecutionAsk(ISIN_2, BigDecimal.valueOf(200), BigDecimal.valueOf(2));
+        postBody = objectMapper.writeValueAsString(execution);
+        logger.info("BEGIN process execution, should be OK with 0 orders filled");
+        this.mockMvc.perform(post("/processExecution")
+                        .content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk()).andExpect(jsonPath("$..filledQuantity").doesNotExist());
+        logger.info("END process execution, should be OK with 0 orders filled");
+
+        execution = mockObjectFactory.getExecutionAsk(ISIN_2, BigDecimal.valueOf(200), BigDecimal.valueOf(8));
+        postBody = objectMapper.writeValueAsString(execution);
+        logger.info("BEGIN process execution, should be OK with 2 orders filled");
+        this.mockMvc.perform(post("/processExecution")
+                        .content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk()).andExpect(jsonPath("$[0]['filledQuantity']").value(50))
+                .andExpect(jsonPath("$[1]['filledQuantity']").value(50));
+        logger.info("END process execution, should be OK with 2 orders filled");
+
+
+        logger.info("open orderbook");
+        this.mockMvc.perform(post("/openOrderBook").content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
 
 
     }
