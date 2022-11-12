@@ -1,7 +1,9 @@
 package com.example.orderbook.mocks;
 
+import com.example.orderbook.constants.ExecutionType;
 import com.example.orderbook.constants.OrderEntryStatus;
 import com.example.orderbook.constants.OrderType;
+import com.example.orderbook.entities.Execution;
 import com.example.orderbook.entities.OrderEntry;
 
 import java.math.BigDecimal;
@@ -26,5 +28,13 @@ public class MockObjectFactory {
         OrderEntry orderEntry5 = new OrderEntry(5L, ISIN_2, BigDecimal.valueOf(50), BigDecimal.valueOf(50), TIME_2, OrderType.SELL, BigDecimal.valueOf(4), OrderEntryStatus.OPEN);
         List<OrderEntry> orders = Arrays.asList(orderEntry1, orderEntry2, orderEntry3, orderEntry4, orderEntry5);
         return orders;
+    }
+
+
+    public Execution getExecutionOffer(String isin, BigDecimal quantity, BigDecimal price) {
+        return new Execution(1L, isin, quantity, price, ExecutionType.OFFER);
+    }
+    public Execution getExecutionAsk(String isin, BigDecimal quantity, BigDecimal price) {
+        return new Execution(1L, isin, quantity, price, ExecutionType.ASK);
     }
 }

@@ -7,12 +7,15 @@ import com.example.orderbook.entities.ExecutionHistory;
 import com.example.orderbook.entities.OrderEntry;
 import com.example.orderbook.mocks.MockObjectFactory;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.orderbook.mocks.MockObjectFactory.*;
+import static com.example.orderbook.mocks.MockObjectFactory.ISIN_1;
+import static com.example.orderbook.mocks.MockObjectFactory.ISIN_2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -22,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class OrderProcessorTest {
 
+    private static final Logger logger = LoggerFactory.getLogger(OrderProcessorTest.class);
+
     OrderProcessor orderProcessor = new OrderProcessor();
     MockObjectFactory mockObjectFactory = new  MockObjectFactory();
 
@@ -30,7 +35,7 @@ class OrderProcessorTest {
     void processExecutionOfferPartialFill() {
         // 2 orders, different price, execution will match the second and partially fill it
         List<OrderEntry> orders = mockObjectFactory.getOrderEntries();
-        Execution execution = new Execution(1L, ISIN_1, BigDecimal.valueOf(60), BigDecimal.valueOf(5.5), ExecutionType.OFFER);
+        Execution execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(60), BigDecimal.valueOf(5.5));
         List<OrderEntry> affectedOrders = new ArrayList<>();
         List<ExecutionHistory> executionHistoryList = new ArrayList<>();
         orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
@@ -45,7 +50,7 @@ class OrderProcessorTest {
     void processExecutionOfferRejected() {
         List<OrderEntry> orders = mockObjectFactory.getOrderEntries();
         // execution price too high, execution rejected
-        Execution execution = new Execution(1L, ISIN_1, BigDecimal.valueOf(60), BigDecimal.valueOf(7), ExecutionType.OFFER);
+        Execution execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(60), BigDecimal.valueOf(7));
         List<OrderEntry> affectedOrders = new ArrayList<>();
         List<ExecutionHistory> executionHistoryList = new ArrayList<>();
         orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
@@ -56,7 +61,7 @@ class OrderProcessorTest {
     void processExecutionOfferFillBoth() {
         List<OrderEntry> orders = mockObjectFactory.getOrderEntries();
         // execution will fill both orders
-        Execution execution = new Execution(1L, ISIN_1, BigDecimal.valueOf(200), BigDecimal.valueOf(5), ExecutionType.OFFER);
+        Execution execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(200), BigDecimal.valueOf(5));
         List<OrderEntry> affectedOrders = new ArrayList<>();
         List<ExecutionHistory> executionHistoryList = new ArrayList<>();
         orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
@@ -75,7 +80,7 @@ class OrderProcessorTest {
     void processExecutionAskRejected() {
         List<OrderEntry> orders = mockObjectFactory.getOrderEntries();
         // execution price too high, execution rejected
-        Execution execution = new Execution(1L, ISIN_2, BigDecimal.valueOf(60), BigDecimal.valueOf(2), ExecutionType.ASK);
+        Execution execution = mockObjectFactory.getExecutionAsk(ISIN_2, BigDecimal.valueOf(60), BigDecimal.valueOf(2));
         List<OrderEntry> affectedOrders = new ArrayList<>();
         List<ExecutionHistory> executionHistoryList = new ArrayList<>();
         orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
@@ -86,7 +91,7 @@ class OrderProcessorTest {
     void processExecutionAskFillBoth() {
         List<OrderEntry> orders = mockObjectFactory.getOrderEntries();
         // execution will fill both orders
-        Execution execution = new Execution(1L, ISIN_2, BigDecimal.valueOf(200), BigDecimal.valueOf(5), ExecutionType.ASK);
+        Execution execution = mockObjectFactory.getExecutionAsk(ISIN_2, BigDecimal.valueOf(200), BigDecimal.valueOf(5));
         List<OrderEntry> affectedOrders = new ArrayList<>();
         List<ExecutionHistory> executionHistoryList = new ArrayList<>();
         orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
