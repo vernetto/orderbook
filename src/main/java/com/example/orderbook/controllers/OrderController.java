@@ -31,9 +31,9 @@ public class OrderController {
         orderService.deleteOrder(id);
     }
 
-    @PutMapping("/editOrder")
-    public void updateOrder(@RequestBody OrderEntry orderEntry) throws OrderBookException {
-        orderService.updateOrder(orderEntry);
+    @PutMapping("/updateOrder/{id}")
+    public void updateOrder(@PathVariable("id") Long id, @RequestBody OrderEntry orderEntry) throws OrderBookException {
+        orderService.updateOrder(id, orderEntry);
     }
 
     @PostMapping("/closeOrderBook")

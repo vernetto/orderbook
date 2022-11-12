@@ -85,15 +85,15 @@ public class OrderService {
         logger.info("deleted order id={}", id);
     }
 
-    public void updateOrder(OrderEntry orderEntry) throws OrderBookException {
-        logger.info("updating order {}", orderEntry);
-        OrderEntry orderEntryToUpdate = orderRepository.findById(orderEntry.getId()).orElseThrow(() -> new OrderBookException(ERR_003, "cannot find Order with id " + orderEntry.getId()));
+    public void updateOrder(Long id, OrderEntry orderEntry) throws OrderBookException {
+        logger.info("updating order with id {} to value {}", id, orderEntry);
+        OrderEntry orderEntryToUpdate = orderRepository.findById(id).orElseThrow(() -> new OrderBookException(ERR_003, "cannot find Order with id " + orderEntry.getId()));
         if (!orderEntryToUpdate.isOpen()) {
             throw new OrderBookException(ERR_005, "order is not open : " + orderEntryToUpdate);
         }
         orderEntryToUpdate.update(orderEntry);
         orderRepository.save(orderEntryToUpdate);
-        logger.info("updated order {}", orderEntry);
+        logger.info("updated order with id {} to value {}", id, orderEntry);
     }
 
 

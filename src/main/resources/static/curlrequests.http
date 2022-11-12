@@ -73,7 +73,7 @@ Content-Type: application/json
 ###
 
 
-PUT http://localhost:8080/editOrder
+PUT http://localhost:8080/updateOrder/4
 accept: */*
 Content-Type: application/json
 

@@ -1,5 +1,6 @@
 # orderbook
 
+Execute with JDK17
 
 H2 console: http://localhost:8080/h2-console/ connect as Generic H2 (Embedded), org.h2.Driver, jdbc:h2:mem:orders, sa/password
 
@@ -8,6 +9,8 @@ Swagger: http://localhost:8080/v2/api-docs  http://localhost:8080/swagger-ui/ind
 Unittests are modelled in src/main/resources/static/ordermodel.ods  (you need Apache Open Office or Excel to view it)
 
 One the application is started, one can execute curlrequests.http to prepopulate the DB
+
+
 
 
 # Remarks
@@ -29,6 +32,11 @@ https://spring.io/guides/tutorials/rest/
 https://spring.io/guides/gs/testing-web/
 https://www.springboottutorial.com/spring-boot-swagger-documentation-for-rest-services
 
- 
+https://jsonpath.com/
+
+https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
+
+
+
 
 
