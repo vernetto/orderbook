@@ -1,40 +1,27 @@
-package com.example.orderbook.entities;
+package com.example.orderbook.dtos;
 
 import com.example.orderbook.constants.OrderEntryStatus;
 import com.example.orderbook.constants.OrderType;
+import io.swagger.annotations.ApiModel;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
-@Entity
-public class OrderEntry {
-    @Id
-    @GeneratedValue(generator="orderentry_seq")
-    @SequenceGenerator(name="orderentry_seq",sequenceName="ORDERENTRY_SEQ", allocationSize=1, initialValue = 1)
+@ApiModel(description="Order to be filled by executions")
+public class OrderEntryDTO {
     private Long id;
-    @Column(length = 50, nullable = false)
     private String financialInstrumendId;
-    @Column(nullable = false)
     private BigDecimal quantity;
-    @Column(nullable = false)
     private BigDecimal availableQuantity;
-    @Column(nullable = false)
     private Date entryDate;
-    @Column(length = 10, nullable = false)
-    @Enumerated(EnumType.STRING)
     private OrderType orderType;
-    @Column(nullable = false)
     private BigDecimal price;
-    @Column(length = 10, nullable = false)
-    @Enumerated(EnumType.STRING)
     private OrderEntryStatus status;
 
-    @ManyToOne
-    OrderBook orderBook;
+    OrderBookDTO orderBookDTO;
 
-    public OrderEntry(Long id, String financialInstrumendId, BigDecimal quantity, BigDecimal availableQuantity, Date entryDate, OrderType orderType, BigDecimal price, OrderEntryStatus status) {
+    public OrderEntryDTO(Long id, String financialInstrumendId, BigDecimal quantity, BigDecimal availableQuantity, Date entryDate, OrderType orderType, BigDecimal price, OrderEntryStatus status) {
         this.id = id;
         this.financialInstrumendId = financialInstrumendId;
         this.quantity = quantity;
@@ -45,7 +32,7 @@ public class OrderEntry {
         this.status = status;
     }
 
-    public OrderEntry() {
+    public OrderEntryDTO() {
 
     }
 
@@ -106,19 +93,19 @@ public class OrderEntry {
         this.availableQuantity = availableQuantity;
     }
 
-    public OrderBook getOrderBook() {
-        return orderBook;
+    public OrderBookDTO getOrderBookDTO() {
+        return orderBookDTO;
     }
 
-    public void setOrderBook(OrderBook orderBook) {
-        this.orderBook = orderBook;
+    public void setOrderBookDTO(OrderBookDTO orderBookDTO) {
+        this.orderBookDTO = orderBookDTO;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderEntry that = (OrderEntry) o;
+        OrderEntryDTO that = (OrderEntryDTO) o;
         return id.equals(that.id) && financialInstrumendId.equals(that.financialInstrumendId) && quantity.equals(that.quantity) && availableQuantity.equals(that.availableQuantity) && entryDate.equals(that.entryDate) && orderType == that.orderType && price.equals(that.price) && status == that.status;
     }
 
@@ -138,7 +125,7 @@ public class OrderEntry {
         sb.append(", orderType=").append(orderType);
         sb.append(", price=").append(price);
         sb.append(", status=").append(status);
-        sb.append(", orderBookId=").append(orderBook != null ? orderBook.getId() : "null");
+        sb.append(", orderBookId=").append(orderBookDTO != null ? orderBookDTO.getId() : "null");
         sb.append('}');
         return sb.toString();
     }
@@ -169,32 +156,12 @@ public class OrderEntry {
         return OrderType.SELL.equals(this.getOrderType());
     }
 
-    public boolean acceptOffer(BigDecimal executionPrice) {
-        // order.price = 5, executionProce = 5.5 -> OK
-        return this.isOpen() && this.isBuy() && this.getPrice().compareTo(executionPrice) >= 0;
-    }
-
-    /**
-     * Returns the buy/sell price at which an order is filled given an executionPrice
-     */
-    public BigDecimal fillPrice(BigDecimal executionPrice) {
-        return this.isBuy() ? executionPrice : this.getPrice();
-    }
-
-    public boolean acceptAsk(BigDecimal executionPrice) {
-        // order.price = 4, executionProce = 5 -> OK
-        return this.isOpen() &&  this.isSell() && this.getPrice().compareTo(executionPrice) <= 0;
-    }
-
-    public BigDecimal computeExecutionPrice(BigDecimal executionPrice) {
-        return this.isBuy() ? executionPrice : this.getPrice();
-    }
 
     /**
      * Shallow clone all properties apart from id
      * @param otherOrder
      */
-    public void update(OrderEntry otherOrder) {
+    public void update(OrderEntryDTO otherOrder) {
         this.setStatus(otherOrder.getStatus());
         this.setQuantity(otherOrder.getQuantity());
         this.setAvailableQuantity(otherOrder.getAvailableQuantity());

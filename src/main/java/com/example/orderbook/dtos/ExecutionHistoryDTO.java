@@ -1,32 +1,23 @@
-package com.example.orderbook.entities;
+package com.example.orderbook.dtos;
 
 import io.swagger.annotations.ApiModel;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-public class ExecutionHistory {
-    @Id
-    @GeneratedValue(generator="executionhistory_seq")
-    @SequenceGenerator(name="executionhistory_seq",sequenceName="EXECUTIONHISTORY_SEQ", allocationSize=1, initialValue = 1)
+@ApiModel(description="History of orders matched by executions")
+public class ExecutionHistoryDTO {
     private Long id;
 
-    @ManyToOne
-    private OrderEntry orderEntry;
-    @ManyToOne
-    private Execution execution;
-
-    @Column(nullable = false)
+    private OrderEntryDTO orderEntry;
+    private ExecutionDTO execution;
     private BigDecimal filledQuantity;
-    @Column(nullable = false)
     private BigDecimal filledPrice;
 
 
-    public ExecutionHistory() {
+    public ExecutionHistoryDTO() {
     }
 
-    public ExecutionHistory(Execution execution, OrderEntry orderEntry, BigDecimal filledQuantity, BigDecimal filledPrice) {
+    public ExecutionHistoryDTO(ExecutionDTO execution, OrderEntryDTO orderEntry, BigDecimal filledQuantity, BigDecimal filledPrice) {
         this.setExecution(execution);
         this.setOrderEntry(orderEntry);
         this.setFilledQuantity(filledQuantity);
@@ -41,19 +32,19 @@ public class ExecutionHistory {
         this.id = id;
     }
 
-    public OrderEntry getOrderEntry() {
+    public OrderEntryDTO getOrderEntry() {
         return orderEntry;
     }
 
-    public void setOrderEntry(OrderEntry orderEntry) {
+    public void setOrderEntry(OrderEntryDTO orderEntry) {
         this.orderEntry = orderEntry;
     }
 
-    public Execution getExecution() {
+    public ExecutionDTO getExecution() {
         return execution;
     }
 
-    public void setExecution(Execution execution) {
+    public void setExecution(ExecutionDTO execution) {
         this.execution = execution;
     }
 

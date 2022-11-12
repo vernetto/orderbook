@@ -1,32 +1,23 @@
-package com.example.orderbook.entities;
+package com.example.orderbook.dtos;
 
 import com.example.orderbook.constants.ExecutionType;
+import io.swagger.annotations.ApiModel;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-public class Execution {
-    @Id
-    @GeneratedValue(generator="execution_seq")
-    @SequenceGenerator(name="execution_seq",sequenceName="EXECUTION_SEQ", allocationSize=1, initialValue = 1)
+@ApiModel(description="Execution of a trade on a set of open OrderEntry")
+public class ExecutionDTO {
     private Long id;
-    @Column(length = 50, nullable = false)
     private String financialInstrumendId;
-    @Column(nullable = false)
     private BigDecimal quantity;
-    @Column(nullable = false)
     private BigDecimal price;
-    @Column(length = 10, nullable = false)
-    @Enumerated(EnumType.STRING)
     private ExecutionType executionType;
-    @ManyToOne
-    OrderBook orderBook;
+    OrderBookDTO orderBookDTO;
 
-    public Execution() {
+    public ExecutionDTO() {
     }
 
-    public Execution(Long id, String financialInstrumendId, BigDecimal quantity, BigDecimal price, ExecutionType executionType) {
+    public ExecutionDTO(Long id, String financialInstrumendId, BigDecimal quantity, BigDecimal price, ExecutionType executionType) {
         this.id = id;
         this.financialInstrumendId = financialInstrumendId;
         this.quantity = quantity;
@@ -75,12 +66,12 @@ public class Execution {
         this.executionType = executionType;
     }
 
-    public OrderBook getOrderBook() {
-        return orderBook;
+    public OrderBookDTO getOrderBookDTO() {
+        return orderBookDTO;
     }
 
-    public void setOrderBook(OrderBook orderBook) {
-        this.orderBook = orderBook;
+    public void setOrderBookDTO(OrderBookDTO orderBookDTO) {
+        this.orderBookDTO = orderBookDTO;
     }
 
     @Override
@@ -91,7 +82,7 @@ public class Execution {
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
         sb.append(", executionType=").append(executionType);
-        sb.append(", orderBookId=").append(orderBook != null ? orderBook.getId() : "null");
+        sb.append(", orderBookId=").append(orderBookDTO != null ? orderBookDTO.getId() : "null");
         sb.append('}');
         return sb.toString();
     }
