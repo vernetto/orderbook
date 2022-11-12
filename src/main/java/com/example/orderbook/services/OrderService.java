@@ -57,7 +57,7 @@ public class OrderService {
         return orderBookRepository.findById(1L).orElseThrow(() -> new OrderBookException(ERR_002, "no order book available"));
     }
 
-    public List<OrderEntry> processExecution(Execution execution) throws OrderBookException {
+    public List<ExecutionHistory> processExecution(Execution execution) throws OrderBookException {
         logger.info("processing execution {}", execution);
         OrderBook orderBook = getOrderBook();
         if (!orderBook.isClosed()) {
@@ -75,7 +75,7 @@ public class OrderService {
         orderRepository.saveAll(affectedOrders);
         executionHistoryRepository.saveAll(executionHistoryList);
         logger.info("these orders have been affected by the execution : {}", affectedOrders);
-        return affectedOrders;
+        return executionHistoryList;
     }
 
 

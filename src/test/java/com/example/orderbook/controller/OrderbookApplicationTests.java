@@ -18,13 +18,15 @@ import java.math.BigDecimal;
 import static com.example.orderbook.mocks.MockObjectFactory.ISIN_1;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class OrderbookApplicationTests {
     private static final Logger logger = LoggerFactory.getLogger(OrderbookApplicationTests.class);
 
-    MockObjectFactory mockObjectFactory = new  MockObjectFactory();
+    MockObjectFactory mockObjectFactory = new MockObjectFactory();
     ObjectMapper objectMapper = new ObjectMapper();
 
     @LocalServerPort
@@ -43,8 +45,8 @@ class OrderbookApplicationTests {
             try {
                 String postBody = objectMapper.writeValueAsString(orderEntry);
                 this.mockMvc.perform(post("/createOrder")
-                        .content(postBody)
-                        .contentType(MediaType.APPLICATION_JSON))
+                                .content(postBody)
+                                .contentType(MediaType.APPLICATION_JSON))
                         .andDo(print())
                         .andExpect(status().isOk());
             } catch (Exception e) {
@@ -53,14 +55,40 @@ class OrderbookApplicationTests {
         });
         logger.info("END creating orders");
 
-        Execution execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(60), BigDecimal.valueOf(5.5));
+        Execution execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(50), BigDecimal.valueOf(5.5));
         String postBody = objectMapper.writeValueAsString(execution);
-        // orderbook is open -> error
+        logger.info("orderbook is open -> expecting error");
         this.mockMvc.perform(post("/processExecution")
-                .content(postBody)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().is5xxServerError());
+
+        logger.info("close orderbook");
+        this.mockMvc.perform(post("/closeOrderBook").content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        logger.info("BEGIN process execution, should be OK");
+        this.mockMvc.perform(post("/processExecution")
+                        .content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk()).andExpect(jsonPath("$..filledQuantity").value(50));
+        logger.info("END process execution, should be OK");
+
+        execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(80), BigDecimal.valueOf(8));
+        postBody = objectMapper.writeValueAsString(execution);
+        logger.info("BEGIN process execution, should be OK but no fill");
+        this.mockMvc.perform(post("/processExecution")
+                        .content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk()).andExpect(jsonPath("$..filledQuantity").doesNotExist());
+
+        logger.info("END process execution, should be OK but no fill");
+
 
 
 
