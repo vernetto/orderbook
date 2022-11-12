@@ -35,6 +35,8 @@ https://www.springboottutorial.com/spring-boot-swagger-documentation-for-rest-se
 https://jsonpath.com/
 
 https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
+https://www.baeldung.com/java-modelmapper-lists
+
 
 
 

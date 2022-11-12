@@ -1,6 +1,5 @@
 package com.example.orderbook.processors;
 
-import com.example.orderbook.constants.ExecutionType;
 import com.example.orderbook.constants.OrderEntryStatus;
 import com.example.orderbook.entities.Execution;
 import com.example.orderbook.entities.ExecutionHistory;

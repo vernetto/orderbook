@@ -33,9 +33,6 @@ class OrderbookApplicationTests {
     @LocalServerPort
     private int port;
 
-    //@Autowired
-    //private TestRestTemplate restTemplate;
-
     @Autowired
     private MockMvc mockMvc;
 
