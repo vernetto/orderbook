@@ -42,7 +42,11 @@ class OrderbookApplicationTests {
         mockObjectFactory.getOrderEntries().forEach(orderEntry -> {
             try {
                 String postBody = objectMapper.writeValueAsString(orderEntry);
-                this.mockMvc.perform(post("/createOrder").content(postBody).contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
+                this.mockMvc.perform(post("/createOrder")
+                        .content(postBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andDo(print())
+                        .andExpect(status().isOk());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -52,7 +56,11 @@ class OrderbookApplicationTests {
         Execution execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(60), BigDecimal.valueOf(5.5));
         String postBody = objectMapper.writeValueAsString(execution);
         // orderbook is open -> error
-        this.mockMvc.perform(post("/processExecution").content(postBody).contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().is5xxServerError());
+        this.mockMvc.perform(post("/processExecution")
+                .content(postBody)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is5xxServerError());
 
 
 
