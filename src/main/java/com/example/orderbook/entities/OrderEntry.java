@@ -30,7 +30,6 @@ public class OrderEntry {
     @Column(length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderEntryStatus status;
-
     @ManyToOne
     OrderBook orderBook;
 

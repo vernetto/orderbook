@@ -4,8 +4,6 @@ import com.example.orderbook.constants.OrderEntryStatus;
 import com.example.orderbook.entities.Execution;
 import com.example.orderbook.entities.ExecutionHistory;
 import com.example.orderbook.entities.OrderEntry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -38,7 +36,7 @@ public class OrderProcessor {
                                 (execution.isAsk() ? orderEntry.isSell() : orderEntry.isBuy()) &&
                                 (execution.isOffer() ? orderEntry.acceptOffer(execution.getPrice()) : orderEntry.acceptAsk(execution.getPrice()))
                 )
-        ).sorted((o1, o2) -> o1.getEntryDate().compareTo(o2.getEntryDate())).collect(Collectors.toList());
+        ).sorted((o1, o2) -> o1.getEntryDate().compareTo(o2.getEntryDate())).toList();
 
         BigDecimal totalQuantityToAllocate = execution.getQuantity();
         for (OrderEntry orderEntry : filteredOrdersToProcess) {

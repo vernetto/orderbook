@@ -3,8 +3,11 @@ package com.example.orderbook.controllers;
 import com.example.orderbook.converters.EntityDTOConverter;
 import com.example.orderbook.dtos.ExecutionDTO;
 import com.example.orderbook.dtos.ExecutionHistoryDTO;
+import com.example.orderbook.dtos.OrderBookStateDTO;
 import com.example.orderbook.dtos.OrderEntryDTO;
+import com.example.orderbook.entities.Execution;
 import com.example.orderbook.entities.ExecutionHistory;
+import com.example.orderbook.entities.OrderBook;
 import com.example.orderbook.entities.OrderEntry;
 import com.example.orderbook.exceptions.OrderBookException;
 import com.example.orderbook.services.OrderService;
@@ -66,8 +69,20 @@ public class OrderController {
     }
 
     @GetMapping("/currentState")
-    public void getCurrentState() {
-        // TODO
+    public OrderBookStateDTO getCurrentState() throws OrderBookException {
+        OrderBookStateDTO orderBookStateDTO = new OrderBookStateDTO();
+        OrderBook orderBook = orderService.getOrderBook();
+        orderBookStateDTO.setOrderBookDTO(entityDTOConverter.convertOrderBookEntityToDTO(orderBook));
+        List<Execution> executionList = orderService.getExecutions(orderBook);
+        orderBookStateDTO.setExecutionDTOList(entityDTOConverter.convertExecutionListEntityToDTO(executionList));
+
+        List<OrderEntry> orderEntryList = orderService.getOrderEntries(orderBook);
+        orderBookStateDTO.setOrderEntryDTOList(entityDTOConverter.convertOrderBookListEntityToDTO(orderEntryList));
+
+        List<ExecutionHistory> executionHistoryList = orderService.getExecutionHistory(orderBook);
+        orderBookStateDTO.setExecutionHistoryDTOList(entityDTOConverter.convertExecutionHistoryEntityToDTOList(executionHistoryList));
+
+        return orderBookStateDTO;
     }
 
     @GetMapping("/executionReport")

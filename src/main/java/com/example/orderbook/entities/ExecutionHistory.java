@@ -1,7 +1,5 @@
 package com.example.orderbook.entities;
 
-import io.swagger.annotations.ApiModel;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -21,6 +19,8 @@ public class ExecutionHistory {
     private BigDecimal filledQuantity;
     @Column(nullable = false)
     private BigDecimal filledPrice;
+    @ManyToOne
+    OrderBook orderBook;
 
 
     public ExecutionHistory() {
@@ -71,5 +71,13 @@ public class ExecutionHistory {
 
     public void setFilledPrice(BigDecimal filledPrice) {
         this.filledPrice = filledPrice;
+    }
+
+    public OrderBook getOrderBook() {
+        return orderBook;
+    }
+
+    public void setOrderBook(OrderBook orderBook) {
+        this.orderBook = orderBook;
     }
 }

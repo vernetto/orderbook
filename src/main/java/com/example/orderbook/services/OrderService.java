@@ -57,7 +57,7 @@ public class OrderService {
      * The "current" OrderBook will be the one with the highest id, regardless of its status
      */
 
-    private OrderBook getOrderBook() throws OrderBookException {
+    public OrderBook getOrderBook() throws OrderBookException {
         return orderBookRepository.findFirstByOrderByIdDesc().orElseThrow(() -> new OrderBookException(ERR_002, "no order book available"));
     }
 
@@ -77,6 +77,7 @@ public class OrderService {
         orderProcessor.processExecution(orders, execution, affectedOrders, executionHistoryList);
         executionRepository.save(execution);
         orderRepository.saveAll(affectedOrders);
+        executionHistoryList.forEach(executionHistory -> executionHistory.setOrderBook(orderBook));
         executionHistoryRepository.saveAll(executionHistoryList);
         logger.info("these orders have been affected by the execution : {}", affectedOrders);
         return executionHistoryList;
@@ -168,5 +169,17 @@ public class OrderService {
         filledOrdersToClose.forEach(orderEntry -> orderEntry.setStatus(OrderEntryStatus.CLOSED));
         orderRepository.saveAll(filledOrdersToClose);
         logger.info("END closeAllFilledOrders");
+    }
+
+    public List<Execution> getExecutions(OrderBook orderBook) {
+        return executionRepository.findByOrderBookId(orderBook.getId());
+    }
+
+    public List<OrderEntry> getOrderEntries(OrderBook orderBook) {
+        return orderRepository.findByOrderBookId(orderBook.getId());
+    }
+
+    public List<ExecutionHistory> getExecutionHistory(OrderBook orderBook) {
+        return executionHistoryRepository.findByOrderBookId(orderBook.getId());
     }
 }
