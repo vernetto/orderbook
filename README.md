@@ -10,7 +10,7 @@ Unittests are modelled in src/main/resources/static/ordermodel.ods  (you need Ap
 
 One the application is started, one can execute curlrequests.http to prepopulate the DB
 
-
+http://localhost:8080/executionReportPDF  export the PDF from the browser
 
 
 # Remarks

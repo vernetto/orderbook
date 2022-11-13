@@ -5,7 +5,8 @@ public enum ExceptionCode {
     ERR_002("no order book available"),
     ERR_003("cannot find Order"),
     ERR_004("Order book is closed"),
-    ERR_005("Cannot edit open order");
+    ERR_005("Cannot edit open order"),
+    ERR_006("PDF error");
 
     String errorReason;
 
