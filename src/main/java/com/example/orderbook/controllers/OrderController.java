@@ -29,7 +29,7 @@ import java.nio.file.Files;
 import java.util.List;
 
 @Api(value = "Order Rest Controller", description = "REST API for Order")
-@RequestMapping("/")
+@RequestMapping("/order/")
 @RestController
 public class OrderController {
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
@@ -43,29 +43,29 @@ public class OrderController {
         this.executionReportPDFGenerator = executionReportPDFGenerator;
     }
 
-    @PostMapping("/createOrder")
+    @PostMapping("/v1/createOrder")
     public OrderEntryDTO createOrder(@RequestBody OrderEntryDTO orderEntryDTO) throws OrderBookException {
         OrderEntry orderEntry = orderService.createOrder(entityDTOConverter.convertOrderEntryDTOToEntity(orderEntryDTO));
         return entityDTOConverter.convertOrderEntryEntityToDTO(orderEntry);
     }
 
-    @DeleteMapping("/deleteOrder")
+    @DeleteMapping("/v1/deleteOrder")
     public void deleteOrder(@RequestParam long id) {
         orderService.deleteOrder(id);
     }
 
-    @PutMapping("/updateOrder/{id}")
+    @PutMapping("/v1/updateOrder/{id}")
     public void updateOrder(@PathVariable("id") Long id, @RequestBody OrderEntryDTO orderEntryDTO) throws OrderBookException {
         OrderEntry orderEntry = entityDTOConverter.convertOrderEntryDTOToEntity(orderEntryDTO);
         orderService.updateOrder(id, orderEntry);
     }
 
-    @PostMapping("/closeOrderBook")
+    @PostMapping("/v1/closeOrderBook")
     public void closeOrderBook() throws OrderBookException {
         orderService.closeOrderBook();
     }
 
-    @PostMapping("/processExecution")
+    @PostMapping("/v1/processExecution")
     public List<ExecutionHistoryDTO> processExecution(@RequestBody ExecutionDTO executionDTO) throws OrderBookException {
         // hack here, to avoid persistence issues...
         executionDTO.setId(null);
@@ -77,12 +77,12 @@ public class OrderController {
         return entityDTOConverter.convertExecutionHistoryEntityToDTOList(executionHistory);
     }
 
-    @PostMapping("/openOrderBook")
+    @PostMapping("/v1/openOrderBook")
     public void openOrderBook() throws OrderBookException {
         orderService.openOrderBook();
     }
 
-    @GetMapping("/currentState")
+    @GetMapping("/v1/currentState")
     public OrderBookStateDTO getCurrentState() throws OrderBookException {
         OrderBookStateDTO orderBookStateDTO = new OrderBookStateDTO();
         OrderBook orderBook = orderService.getOrderBook();
@@ -99,14 +99,14 @@ public class OrderController {
         return orderBookStateDTO;
     }
 
-    @GetMapping("/executionReport")
+    @GetMapping("/v1/executionReport")
     public List<ExecutionHistoryDTO> getExecutionReport() throws OrderBookException {
         OrderBook orderBook = orderService.getOrderBook();
         List<ExecutionHistory> executionHistoryList = orderService.getExecutionHistory(orderBook);
         return entityDTOConverter.convertExecutionHistoryEntityToDTOList(executionHistoryList);
     }
 
-    @GetMapping(value = "/executionReportPDF", produces = "application/pdf")
+    @GetMapping(value = "/v1/executionReportPDF", produces = "application/pdf")
     public ResponseEntity<byte[]> getExecutionReportPDF() throws OrderBookException {
         OrderBook orderBook = orderService.getOrderBook();
         List<ExecutionHistory> executionHistoryList = orderService.getExecutionHistory(orderBook);

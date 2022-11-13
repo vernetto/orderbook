@@ -42,7 +42,7 @@ class OrderbookApplicationTests {
         mockObjectFactory.getOrderEntries().forEach(orderEntry -> {
             try {
                 String postBody = objectMapper.writeValueAsString(orderEntry);
-                this.mockMvc.perform(post("/createOrder")
+                this.mockMvc.perform(post("/order/v1/createOrder")
                                 .content(postBody)
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andDo(print())
@@ -56,14 +56,14 @@ class OrderbookApplicationTests {
         Execution execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(50), BigDecimal.valueOf(5.5));
         String postBody = objectMapper.writeValueAsString(execution);
         logger.info("orderbook is open -> expecting error");
-        this.mockMvc.perform(post("/processExecution")
+        this.mockMvc.perform(post("/order/v1/processExecution")
                         .content(postBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().is5xxServerError());
 
         logger.info("close orderbook");
-        this.mockMvc.perform(post("/closeOrderBook").content("")
+        this.mockMvc.perform(post("/order/v1/closeOrderBook").content("")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -71,7 +71,7 @@ class OrderbookApplicationTests {
 
         logger.info("create order with orderbook closed, should fail");
         postBody = objectMapper.writeValueAsString(mockObjectFactory.getOrderEntries().get(0));
-        this.mockMvc.perform(post("/createOrder")
+        this.mockMvc.perform(post("/order/v1/createOrder")
                         .content(postBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -80,7 +80,7 @@ class OrderbookApplicationTests {
 
         logger.info("BEGIN process execution, should be OK");
         postBody = objectMapper.writeValueAsString(execution);
-        this.mockMvc.perform(post("/processExecution")
+        this.mockMvc.perform(post("/order/v1/processExecution")
                         .content(postBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -90,7 +90,7 @@ class OrderbookApplicationTests {
         execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(80), BigDecimal.valueOf(8));
         postBody = objectMapper.writeValueAsString(execution);
         logger.info("BEGIN process execution, should be OK but no fill");
-        this.mockMvc.perform(post("/processExecution")
+        this.mockMvc.perform(post("/order/v1/processExecution")
                         .content(postBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -102,7 +102,7 @@ class OrderbookApplicationTests {
         execution = mockObjectFactory.getExecutionOffer(ISIN_1, BigDecimal.valueOf(200), BigDecimal.valueOf(4));
         postBody = objectMapper.writeValueAsString(execution);
         logger.info("BEGIN process execution, should be OK with 2 orders filled");
-        this.mockMvc.perform(post("/processExecution")
+        this.mockMvc.perform(post("/order/v1/processExecution")
                         .content(postBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -113,7 +113,7 @@ class OrderbookApplicationTests {
         execution = mockObjectFactory.getExecutionOffer(ISIN_2, BigDecimal.valueOf(200), BigDecimal.valueOf(4));
         postBody = objectMapper.writeValueAsString(execution);
         logger.info("BEGIN process execution, should be OK with 1 order filled");
-        this.mockMvc.perform(post("/processExecution")
+        this.mockMvc.perform(post("/order/v1/processExecution")
                         .content(postBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -123,7 +123,7 @@ class OrderbookApplicationTests {
         execution = mockObjectFactory.getExecutionAsk(ISIN_2, BigDecimal.valueOf(200), BigDecimal.valueOf(2));
         postBody = objectMapper.writeValueAsString(execution);
         logger.info("BEGIN process execution, should be OK with 0 orders filled");
-        this.mockMvc.perform(post("/processExecution")
+        this.mockMvc.perform(post("/order/v1/processExecution")
                         .content(postBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -133,7 +133,7 @@ class OrderbookApplicationTests {
         execution = mockObjectFactory.getExecutionAsk(ISIN_2, BigDecimal.valueOf(200), BigDecimal.valueOf(8));
         postBody = objectMapper.writeValueAsString(execution);
         logger.info("BEGIN process execution, should be OK with 2 orders filled");
-        this.mockMvc.perform(post("/processExecution")
+        this.mockMvc.perform(post("/order/v1/processExecution")
                         .content(postBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -143,7 +143,7 @@ class OrderbookApplicationTests {
 
 
         logger.info("open orderbook");
-        this.mockMvc.perform(post("/openOrderBook").content(postBody)
+        this.mockMvc.perform(post("/order/v1/openOrderBook").content(postBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());

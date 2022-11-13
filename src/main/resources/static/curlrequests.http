@@ -1,6 +1,6 @@
 
-# curl -X POST "http://localhost:8080/createOrder" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"availableQuantity\": 100,  \"entryDate\": \"2022-11-11T10:42:23.740Z\",  \"financialInstrumendId\": \"ISIN1\",  \"id\": 0,  \"orderType\": \"BUY\",  \"price\": 5,  \"quantity\": 100,  \"status\": \"OPEN\"}"
-POST http://localhost:8080/createOrder
+# curl -X POST "http://localhost:8080/order/v1/createOrder" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"availableQuantity\": 100,  \"entryDate\": \"2022-11-11T10:42:23.740Z\",  \"financialInstrumendId\": \"ISIN1\",  \"id\": 0,  \"orderType\": \"BUY\",  \"price\": 5,  \"quantity\": 100,  \"status\": \"OPEN\"}"
+POST http://localhost:8080/order/v1/createOrder
 accept: */*
 Content-Type: application/json
 
@@ -18,7 +18,7 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:8080/createOrder
+POST http://localhost:8080/order/v1/createOrder
 accept: */*
 Content-Type: application/json
 
@@ -36,7 +36,7 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:8080/createOrder
+POST http://localhost:8080/order/v1/createOrder
 accept: */*
 Content-Type: application/json
 
@@ -55,7 +55,7 @@ Content-Type: application/json
 
 
 
-POST http://localhost:8080/createOrder
+POST http://localhost:8080/order/v1/createOrder
 accept: */*
 Content-Type: application/json
 
@@ -73,7 +73,7 @@ Content-Type: application/json
 ###
 
 
-PUT http://localhost:8080/updateOrder/4
+PUT http://localhost:8080/order/v1/updateOrder/4
 accept: */*
 Content-Type: application/json
 
@@ -90,7 +90,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/createOrder
+POST http://localhost:8080/order/v1/createOrder
 accept: */*
 Content-Type: application/json
 
@@ -108,11 +108,11 @@ Content-Type: application/json
 ###
 
 
-DELETE http://localhost:8080/deleteOrder?id=5
+DELETE http://localhost:8080/order/v1/deleteOrder?id=5
 
 ###
 
-POST http://localhost:8080/closeOrderBook
+POST http://localhost:8080/order/v1/closeOrderBook
 accept: */*
 Content-Type: application/json
 
@@ -122,8 +122,8 @@ Content-Type: application/json
 ###
 
 
-# curl -X POST "http://localhost:8080/processExecution" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"executionType\": \"OFFER\",  \"financialInstrumendId\": \"ISIN1\",  \"id\": 0,  \"price\": 5.5,  \"quantity\": 50}"
-POST http://localhost:8080/processExecution
+# curl -X POST "http://localhost:8080/order/v1/processExecution" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"executionType\": \"OFFER\",  \"financialInstrumendId\": \"ISIN1\",  \"id\": 0,  \"price\": 5.5,  \"quantity\": 50}"
+POST http://localhost:8080/order/v1/processExecution
 accept: */*
 Content-Type: application/json
 
@@ -138,7 +138,7 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:8080/processExecution
+POST http://localhost:8080/order/v1/processExecution
 accept: */*
 Content-Type: application/json
 
@@ -152,7 +152,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/processExecution
+POST http://localhost:8080/order/v1/processExecution
 accept: */*
 Content-Type: application/json
 
@@ -166,7 +166,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/processExecution
+POST http://localhost:8080/order/v1/processExecution
 accept: */*
 Content-Type: application/json
 
@@ -180,7 +180,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/processExecution
+POST http://localhost:8080/order/v1/processExecution
 accept: */*
 Content-Type: application/json
 
@@ -196,7 +196,7 @@ Content-Type: application/json
 
 
 
-POST http://localhost:8080/openOrderBook
+POST http://localhost:8080/order/v1/openOrderBook
 accept: */*
 Content-Type: application/json
 

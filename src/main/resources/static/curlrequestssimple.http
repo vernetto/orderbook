@@ -1,6 +1,6 @@
 # removed delete and update from curirequests.http
 
-POST http://localhost:8080/createOrder
+POST http://localhost:8080/order/v1/createOrder
 accept: */*
 Content-Type: application/json
 
@@ -18,7 +18,7 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:8080/createOrder
+POST http://localhost:8080/order/v1/createOrder
 accept: */*
 Content-Type: application/json
 
@@ -36,7 +36,7 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:8080/createOrder
+POST http://localhost:8080/order/v1/createOrder
 accept: */*
 Content-Type: application/json
 
@@ -55,7 +55,7 @@ Content-Type: application/json
 
 
 
-POST http://localhost:8080/createOrder
+POST http://localhost:8080/order/v1/createOrder
 accept: */*
 Content-Type: application/json
 
@@ -73,7 +73,7 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:8080/closeOrderBook
+POST http://localhost:8080/order/v1/closeOrderBook
 accept: */*
 Content-Type: application/json
 
@@ -95,7 +95,7 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:8080/processExecution
+POST http://localhost:8080/order/v1/processExecution
 accept: */*
 Content-Type: application/json
 
@@ -109,7 +109,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/processExecution
+POST http://localhost:8080/order/v1/processExecution
 accept: */*
 Content-Type: application/json
 
@@ -123,7 +123,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/processExecution
+POST http://localhost:8080/order/v1/processExecution
 accept: */*
 Content-Type: application/json
 
@@ -137,7 +137,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/processExecution
+POST http://localhost:8080/order/v1/processExecution
 accept: */*
 Content-Type: application/json
 
@@ -152,7 +152,7 @@ Content-Type: application/json
 ###
 
 
-#POST http://localhost:8080/openOrderBook
+#POST http://localhost:8080/order/v1/openOrderBook
 #accept: */*
 #Content-Type: application/json
 #
