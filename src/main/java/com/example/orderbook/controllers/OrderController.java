@@ -16,6 +16,8 @@ import com.example.orderbook.services.OrderService;
 import com.itextpdf.text.DocumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -44,12 +46,20 @@ public class OrderController {
     }
 
     @ApiOperation(value = "Creates new order", notes = "OrderBook must be open.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = OrderEntryDTO.class),
+            @ApiResponse(code = 500, message = "System error or OrderBook closed")})
     @PostMapping("/v1/createOrder")
     public OrderEntryDTO createOrder(@RequestBody OrderEntryDTO orderEntryDTO) throws OrderBookException {
         OrderEntry orderEntry = orderService.createOrder(entityDTOConverter.convertOrderEntryDTOToEntity(orderEntryDTO));
         return entityDTOConverter.convertOrderEntryEntityToDTO(orderEntry);
     }
 
+    @ApiOperation(value = "Deletes order by orderId", notes = "OrderBook must be open.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Order does not exist"),
+            @ApiResponse(code = 500, message = "System error")})
     @DeleteMapping("/v1/deleteOrder")
     public void deleteOrder(@RequestParam long id) {
         try {
@@ -59,17 +69,30 @@ public class OrderController {
         }
     }
 
+    @ApiOperation(value = "Updates order by orderId", notes = "OrderBook must be open.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 500, message = "System error, Order does not exist or Order is not OPEN")})
     @PutMapping("/v1/updateOrder/{id}")
     public void updateOrder(@PathVariable("id") Long id, @RequestBody OrderEntryDTO orderEntryDTO) throws OrderBookException {
         OrderEntry orderEntry = entityDTOConverter.convertOrderEntryDTOToEntity(orderEntryDTO);
         orderService.updateOrder(id, orderEntry);
     }
 
+
+    @ApiOperation(value = "close Order book", notes = "OrderBook must be open.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 500, message = "System error, or Order book is already closed")})
     @PostMapping("/v1/closeOrderBook")
     public void closeOrderBook() throws OrderBookException {
         orderService.closeOrderBook();
     }
 
+    @ApiOperation(value = "Processes an execution against all open orders in the current OrderBook", notes = "OrderBook must be closed.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 500, message = "System error, or Order book is open")})
     @PostMapping("/v1/processExecution")
     public List<ExecutionHistoryDTO> processExecution(@RequestBody ExecutionDTO executionDTO) throws OrderBookException {
         // hack here, to avoid persistence issues...
@@ -82,11 +105,19 @@ public class OrderController {
         return entityDTOConverter.convertExecutionHistoryEntityToDTOList(executionHistory);
     }
 
+    @ApiOperation(value = "Open a new orderBook", notes = "OrderBook must be closed.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 500, message = "System error, or Order book is already open")})
     @PostMapping("/v1/openOrderBook")
     public void openOrderBook() throws OrderBookException {
         orderService.openOrderBook();
     }
 
+    @ApiOperation(value = "Return current Orders, Execution and ExecutionHistory items", notes = "")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 500, message = "System error")})
     @GetMapping("/v1/currentState")
     public OrderBookStateDTO getCurrentState() throws OrderBookException {
         OrderBookStateDTO orderBookStateDTO = new OrderBookStateDTO();
@@ -104,6 +135,10 @@ public class OrderController {
         return orderBookStateDTO;
     }
 
+    @ApiOperation(value = "Return list of Orders filling by executions", notes = "")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 500, message = "System error")})
     @GetMapping("/v1/executionReport")
     public List<ExecutionHistoryDTO> getExecutionReport() throws OrderBookException {
         OrderBook orderBook = orderService.getOrderBook();
@@ -111,6 +146,10 @@ public class OrderController {
         return entityDTOConverter.convertExecutionHistoryEntityToDTOList(executionHistoryList);
     }
 
+    @ApiOperation(value = "Return list of Orders filling by executions as PDF", notes = "")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 500, message = "System error")})
     @GetMapping(value = "/v1/executionReportPDF", produces = "application/pdf")
     public ResponseEntity<byte[]> getExecutionReportPDF() throws OrderBookException {
         OrderBook orderBook = orderService.getOrderBook();
