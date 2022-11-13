@@ -156,12 +156,6 @@ public class OrderService {
     }
 
 
-    public void generateExecutionReport() {
-        logger.info("BEGIN generateExecutionReport");
-        // TODO
-        logger.info("END generateExecutionReport");
-    }
-
     public void closeAllFilledOrders() {
         logger.info("BEGIN closeAllFilledOrders");
         List<OrderEntry> filledOrdersToClose = orderRepository.findByStatus(OrderEntryStatus.FILLED);

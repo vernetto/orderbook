@@ -152,12 +152,12 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:8080/openOrderBook
-accept: */*
-Content-Type: application/json
-
-{
-}
+#POST http://localhost:8080/openOrderBook
+#accept: */*
+#Content-Type: application/json
+#
+#{
+#}
 
 ###
 

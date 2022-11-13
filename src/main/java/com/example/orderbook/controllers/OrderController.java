@@ -86,9 +86,10 @@ public class OrderController {
     }
 
     @GetMapping("/executionReport")
-    public void getExecutionReport() {
-        // TODO
-        orderService.generateExecutionReport();
+    public List<ExecutionHistoryDTO> getExecutionReport() throws OrderBookException {
+        OrderBook orderBook = orderService.getOrderBook();
+        List<ExecutionHistory> executionHistoryList = orderService.getExecutionHistory(orderBook);
+        return entityDTOConverter.convertExecutionHistoryEntityToDTOList(executionHistoryList);
     }
 
 
