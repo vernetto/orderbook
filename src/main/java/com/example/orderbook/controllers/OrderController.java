@@ -15,17 +15,17 @@ import com.example.orderbook.reporting.ExecutionReportPDFGenerator;
 import com.example.orderbook.services.OrderService;
 import com.itextpdf.text.DocumentException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 
 @Api(value = "Order Rest Controller", description = "REST API for Order")
@@ -43,6 +43,7 @@ public class OrderController {
         this.executionReportPDFGenerator = executionReportPDFGenerator;
     }
 
+    @ApiOperation(value = "Creates new order", notes = "OrderBook must be open.")
     @PostMapping("/v1/createOrder")
     public OrderEntryDTO createOrder(@RequestBody OrderEntryDTO orderEntryDTO) throws OrderBookException {
         OrderEntry orderEntry = orderService.createOrder(entityDTOConverter.convertOrderEntryDTOToEntity(orderEntryDTO));
@@ -51,7 +52,11 @@ public class OrderController {
 
     @DeleteMapping("/v1/deleteOrder")
     public void deleteOrder(@RequestParam long id) {
-        orderService.deleteOrder(id);
+        try {
+            orderService.deleteOrder(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order id not found " + id, e);
+        }
     }
 
     @PutMapping("/v1/updateOrder/{id}")
@@ -114,8 +119,7 @@ public class OrderController {
         byte[] contents;
         try {
             contents = executionReportPDFGenerator.generateReport(executionHistoryDTOList);
-        }
-        catch (DocumentException e) {
+        } catch (DocumentException e) {
             logger.error("error generating PDF", e);
             throw new OrderBookException(ExceptionCode.ERR_006, e.getMessage());
         }
