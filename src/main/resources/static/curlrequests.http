@@ -1,5 +1,5 @@
 
-# curl -X POST "http://localhost:8080/order/v1/createOrder" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"availableQuantity\": 100,  \"entryDate\": \"2022-11-11T10:42:23.740Z\",  \"financialInstrumendId\": \"ISIN1\",  \"id\": 0,  \"orderType\": \"BUY\",  \"price\": 5,  \"quantity\": 100,  \"status\": \"OPEN\"}"
+# curl -X POST "http://localhost:8080/order/v1/createOrder" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"availableQuantity\": 100,  \"entryDate\": \"2022-11-11T10:42:23.740Z\",  \"financialInstrumentId\": \"ISIN1\",  \"id\": 0,  \"orderType\": \"BUY\",  \"price\": 5,  \"quantity\": 100,  \"status\": \"OPEN\"}"
 POST http://localhost:8080/order/v1/createOrder
 accept: */*
 Content-Type: application/json
@@ -7,7 +7,7 @@ Content-Type: application/json
 {
   "availableQuantity": 100,
   "entryDate": "2022-11-11T10:42:23.740Z",
-  "financialInstrumendId": "ISIN1",
+  "financialInstrumentId": "ISIN1",
   "id": 0,
   "orderType": "BUY",
   "price": 5,
@@ -25,7 +25,7 @@ Content-Type: application/json
 {
   "availableQuantity": 100,
   "entryDate": "2022-11-11T10:45:23.740Z",
-  "financialInstrumendId": "ISIN1",
+  "financialInstrumentId": "ISIN1",
   "id": 0,
   "orderType": "BUY",
   "price": 6,
@@ -43,7 +43,7 @@ Content-Type: application/json
 {
 "availableQuantity": 50,
 "entryDate": "2022-11-11T10:45:23.740Z",
-"financialInstrumendId": "ISIN2",
+"financialInstrumentId": "ISIN2",
 "id": 0,
 "orderType": "SELL",
 "price": 4,
@@ -62,7 +62,7 @@ Content-Type: application/json
 {
   "availableQuantity": 50,
   "entryDate": "2022-11-11T10:47:23.740Z",
-  "financialInstrumendId": "ISIN2",
+  "financialInstrumentId": "ISIN2",
   "id": 0,
   "orderType": "SELL",
   "price": 4,
@@ -80,7 +80,7 @@ Content-Type: application/json
 {
   "availableQuantity": 40,
   "entryDate": "2022-11-11T11:47:23.740Z",
-  "financialInstrumendId": "ISIN2",
+  "financialInstrumentId": "ISIN2",
   "id": 4,
   "orderType": "SELL",
   "price": 4,
@@ -97,7 +97,7 @@ Content-Type: application/json
 {
   "availableQuantity": 99,
   "entryDate": "2022-11-11T10:42:23.740Z",
-  "financialInstrumendId": "ISIN1",
+  "financialInstrumentId": "ISIN1",
   "id": 0,
   "orderType": "BUY",
   "price": 5,
@@ -122,14 +122,14 @@ Content-Type: application/json
 ###
 
 
-# curl -X POST "http://localhost:8080/order/v1/processExecution" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"executionType\": \"OFFER\",  \"financialInstrumendId\": \"ISIN1\",  \"id\": 0,  \"price\": 5.5,  \"quantity\": 50}"
+# curl -X POST "http://localhost:8080/order/v1/processExecution" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"executionType\": \"OFFER\",  \"financialInstrumentId\": \"ISIN1\",  \"id\": 0,  \"price\": 5.5,  \"quantity\": 50}"
 POST http://localhost:8080/order/v1/processExecution
 accept: */*
 Content-Type: application/json
 
 {
   "executionType": "OFFER",
-  "financialInstrumendId": "ISIN1",
+  "financialInstrumentId": "ISIN1",
   "id": 0,
   "price": 5.5,
   "quantity": 50
@@ -144,7 +144,7 @@ Content-Type: application/json
 
 {
   "executionType": "OFFER",
-  "financialInstrumendId": "ISIN1",
+  "financialInstrumentId": "ISIN1",
   "id": 0,
   "price": 8,
   "quantity": 80
@@ -158,7 +158,7 @@ Content-Type: application/json
 
 {
   "executionType": "OFFER",
-  "financialInstrumendId": "ISIN1",
+  "financialInstrumentId": "ISIN1",
   "id": 0,
   "price": 4,
   "quantity": 200
@@ -172,7 +172,7 @@ Content-Type: application/json
 
 {
   "executionType": "ASK",
-  "financialInstrumendId": "ISIN2",
+  "financialInstrumentId": "ISIN2",
   "id": 0,
   "price": 2,
   "quantity": 200
@@ -186,7 +186,7 @@ Content-Type: application/json
 
 {
   "executionType": "ASK",
-  "financialInstrumendId": "ISIN2",
+  "financialInstrumentId": "ISIN2",
   "id": 0,
   "price": 5,
   "quantity": 200

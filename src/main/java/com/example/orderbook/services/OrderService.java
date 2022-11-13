@@ -70,7 +70,7 @@ public class OrderService {
         execution.setOrderBook(orderBook);
 
         OrderType orderType = execution.getExecutionType().equals(ExecutionType.OFFER) ? OrderType.BUY : OrderType.SELL;
-        List<OrderEntry> orders = orderRepository.findByStatusAndFinancialInstrumendIdAndOrderTypeOrderByEntryDateAsc(OrderEntryStatus.OPEN, execution.getFinancialInstrumendId(), orderType);
+        List<OrderEntry> orders = orderRepository.findByStatusAndFinancialInstrumentIdAndOrderTypeOrderByEntryDateAsc(OrderEntryStatus.OPEN, execution.getFinancialInstrumentId(), orderType);
         logger.info("these orders are matching the instrument : {}", orders);
         List<OrderEntry> affectedOrders = new ArrayList<>();
         List<ExecutionHistory> executionHistoryList = new ArrayList<>();

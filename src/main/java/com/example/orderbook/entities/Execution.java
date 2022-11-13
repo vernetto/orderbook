@@ -12,7 +12,7 @@ public class Execution {
     @SequenceGenerator(name="execution_seq",sequenceName="EXECUTION_SEQ", allocationSize=1, initialValue = 1)
     private Long id;
     @Column(length = 50, nullable = false)
-    private String financialInstrumendId;
+    private String financialInstrumentId;
     @Column(nullable = false)
     private BigDecimal quantity;
     @Column(nullable = false)
@@ -26,9 +26,9 @@ public class Execution {
     public Execution() {
     }
 
-    public Execution(Long id, String financialInstrumendId, BigDecimal quantity, BigDecimal price, ExecutionType executionType) {
+    public Execution(Long id, String financialInstrumentId, BigDecimal quantity, BigDecimal price, ExecutionType executionType) {
         this.id = id;
-        this.financialInstrumendId = financialInstrumendId;
+        this.financialInstrumentId = financialInstrumentId;
         this.quantity = quantity;
         this.price = price;
         this.executionType = executionType;
@@ -43,12 +43,12 @@ public class Execution {
         return id;
     }
 
-    public String getFinancialInstrumendId() {
-        return financialInstrumendId;
+    public String getFinancialInstrumentId() {
+        return financialInstrumentId;
     }
 
-    public void setFinancialInstrumendId(String financialInstrumendId) {
-        this.financialInstrumendId = financialInstrumendId;
+    public void setFinancialInstrumentId(String financialInstrumentId) {
+        this.financialInstrumentId = financialInstrumentId;
     }
 
     public BigDecimal getQuantity() {
@@ -87,7 +87,7 @@ public class Execution {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Execution{");
         sb.append("id=").append(id);
-        sb.append(", financialInstrumendId='").append(financialInstrumendId).append('\'');
+        sb.append(", financialInstrumentId='").append(financialInstrumentId).append('\'');
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
         sb.append(", executionType=").append(executionType);

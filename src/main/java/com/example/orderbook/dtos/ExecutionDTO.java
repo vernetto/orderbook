@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @ApiModel(description="Execution of a trade on a set of open OrderEntry")
 public class ExecutionDTO {
     private Long id;
-    private String financialInstrumendId;
+    private String financialInstrumentId;
     private BigDecimal quantity;
     private BigDecimal price;
     private ExecutionType executionType;
@@ -17,9 +17,9 @@ public class ExecutionDTO {
     public ExecutionDTO() {
     }
 
-    public ExecutionDTO(Long id, String financialInstrumendId, BigDecimal quantity, BigDecimal price, ExecutionType executionType) {
+    public ExecutionDTO(Long id, String financialInstrumentId, BigDecimal quantity, BigDecimal price, ExecutionType executionType) {
         this.id = id;
-        this.financialInstrumendId = financialInstrumendId;
+        this.financialInstrumentId = financialInstrumentId;
         this.quantity = quantity;
         this.price = price;
         this.executionType = executionType;
@@ -34,12 +34,12 @@ public class ExecutionDTO {
         return id;
     }
 
-    public String getFinancialInstrumendId() {
-        return financialInstrumendId;
+    public String getFinancialInstrumentId() {
+        return financialInstrumentId;
     }
 
-    public void setFinancialInstrumendId(String financialInstrumendId) {
-        this.financialInstrumendId = financialInstrumendId;
+    public void setFinancialInstrumentId(String financialInstrumentId) {
+        this.financialInstrumentId = financialInstrumentId;
     }
 
     public BigDecimal getQuantity() {
@@ -78,7 +78,7 @@ public class ExecutionDTO {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Execution{");
         sb.append("id=").append(id);
-        sb.append(", financialInstrumendId='").append(financialInstrumendId).append('\'');
+        sb.append(", financialInstrumentId='").append(financialInstrumentId).append('\'');
         sb.append(", quantity=").append(quantity);
         sb.append(", price=").append(price);
         sb.append(", executionType=").append(executionType);

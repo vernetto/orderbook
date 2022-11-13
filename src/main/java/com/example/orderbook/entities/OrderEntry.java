@@ -15,7 +15,7 @@ public class OrderEntry {
     @SequenceGenerator(name="orderentry_seq",sequenceName="ORDERENTRY_SEQ", allocationSize=1, initialValue = 1)
     private Long id;
     @Column(length = 50, nullable = false)
-    private String financialInstrumendId;
+    private String financialInstrumentId;
     @Column(nullable = false)
     private BigDecimal quantity;
     @Column(nullable = false)
@@ -33,9 +33,9 @@ public class OrderEntry {
     @ManyToOne
     OrderBook orderBook;
 
-    public OrderEntry(Long id, String financialInstrumendId, BigDecimal quantity, BigDecimal availableQuantity, Date entryDate, OrderType orderType, BigDecimal price, OrderEntryStatus status) {
+    public OrderEntry(Long id, String financialInstrumentId, BigDecimal quantity, BigDecimal availableQuantity, Date entryDate, OrderType orderType, BigDecimal price, OrderEntryStatus status) {
         this.id = id;
-        this.financialInstrumendId = financialInstrumendId;
+        this.financialInstrumentId = financialInstrumentId;
         this.quantity = quantity;
         this.availableQuantity = availableQuantity;
         this.entryDate = entryDate;
@@ -57,12 +57,12 @@ public class OrderEntry {
         return id;
     }
 
-    public String getFinancialInstrumendId() {
-        return financialInstrumendId;
+    public String getFinancialInstrumentId() {
+        return financialInstrumentId;
     }
 
-    public void setFinancialInstrumendId(String financialInstrumendId) {
-        this.financialInstrumendId = financialInstrumendId;
+    public void setFinancialInstrumentId(String financialInstrumentId) {
+        this.financialInstrumentId = financialInstrumentId;
     }
 
     public BigDecimal getQuantity() {
@@ -118,19 +118,19 @@ public class OrderEntry {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderEntry that = (OrderEntry) o;
-        return id.equals(that.id) && financialInstrumendId.equals(that.financialInstrumendId) && quantity.equals(that.quantity) && availableQuantity.equals(that.availableQuantity) && entryDate.equals(that.entryDate) && orderType == that.orderType && price.equals(that.price) && status == that.status;
+        return id.equals(that.id) && financialInstrumentId.equals(that.financialInstrumentId) && quantity.equals(that.quantity) && availableQuantity.equals(that.availableQuantity) && entryDate.equals(that.entryDate) && orderType == that.orderType && price.equals(that.price) && status == that.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, financialInstrumendId, quantity, availableQuantity, entryDate, orderType, price, status);
+        return Objects.hash(id, financialInstrumentId, quantity, availableQuantity, entryDate, orderType, price, status);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("OrderEntry{");
         sb.append("id=").append(id);
-        sb.append(", financialInstrumendId='").append(financialInstrumendId).append('\'');
+        sb.append(", financialInstrumentId='").append(financialInstrumentId).append('\'');
         sb.append(", quantity=").append(quantity);
         sb.append(", availableQuantity=").append(availableQuantity);
         sb.append(", entryDate=").append(entryDate);
@@ -198,7 +198,7 @@ public class OrderEntry {
         this.setQuantity(otherOrder.getQuantity());
         this.setAvailableQuantity(otherOrder.getAvailableQuantity());
         this.setEntryDate(otherOrder.getEntryDate());
-        this.setFinancialInstrumendId(otherOrder.getFinancialInstrumendId());
+        this.setFinancialInstrumentId(otherOrder.getFinancialInstrumentId());
         this.setPrice(otherOrder.getPrice());
         this.setOrderType(otherOrder.getOrderType());
     }

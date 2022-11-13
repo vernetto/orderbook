@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class OrderProcessor {
@@ -32,7 +31,7 @@ public class OrderProcessor {
         // only ISINs matching the execution ISIN should be considered, and ordertype should match execution type, and order accepts execution price
         List<OrderEntry> filteredOrdersToProcess = ordersToProcess.stream().filter(
                 orderEntry -> (
-                        orderEntry.getFinancialInstrumendId().equals(execution.getFinancialInstrumendId()) &&
+                        orderEntry.getFinancialInstrumentId().equals(execution.getFinancialInstrumentId()) &&
                                 (execution.isAsk() ? orderEntry.isSell() : orderEntry.isBuy()) &&
                                 (execution.isOffer() ? orderEntry.acceptOffer(execution.getPrice()) : orderEntry.acceptAsk(execution.getPrice()))
                 )

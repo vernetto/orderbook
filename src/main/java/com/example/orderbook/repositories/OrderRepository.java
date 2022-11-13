@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface  OrderRepository extends JpaRepository<OrderEntry, Long> {
-    List<OrderEntry> findByStatusAndFinancialInstrumendIdAndOrderTypeOrderByEntryDateAsc(OrderEntryStatus open, String financialInstrumendId, OrderType orderType);
+    List<OrderEntry> findByStatusAndFinancialInstrumentIdAndOrderTypeOrderByEntryDateAsc(OrderEntryStatus open, String financialInstrumentId, OrderType orderType);
 
     List<OrderEntry>  findByStatusNot(OrderEntryStatus orderEntryStatus);
 
