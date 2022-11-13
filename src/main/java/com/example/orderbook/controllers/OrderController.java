@@ -55,15 +55,28 @@ public class OrderController {
         List<ExecutionHistory> executionHistory = orderService.processExecution(entityDTOConverter.convertExecutionDTOToEntity(executionDTO));
         // If all orders have been completed, a simple “execution report” shall be presented
         if (orderService.allOrdersCompleted()) {
-            orderService.generateExecutionReport();
             orderService.closeAllFilledOrders();
         }
         return entityDTOConverter.convertExecutionHistoryEntityToDTOList(executionHistory);
-
     }
 
     @PostMapping("/openOrderBook")
     public void openOrderBook() throws OrderBookException {
         orderService.openOrderBook();
     }
+
+    @GetMapping("/currentState")
+    public void getCurrentState() {
+        // TODO
+    }
+
+    @GetMapping("/executionReport")
+    public void getExecutionReport() {
+        // TODO
+        orderService.generateExecutionReport();
+    }
+
+
+
+
 }
