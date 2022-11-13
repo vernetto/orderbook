@@ -53,8 +53,12 @@ public class OrderService {
         return savedEntry;
     }
 
+    /**
+     * The "current" OrderBook will be the one with the highest id, regardless of its status
+     */
+
     private OrderBook getOrderBook() throws OrderBookException {
-        return orderBookRepository.findById(1L).orElseThrow(() -> new OrderBookException(ERR_002, "no order book available"));
+        return orderBookRepository.findFirstByOrderByIdDesc().orElseThrow(() -> new OrderBookException(ERR_002, "no order book available"));
     }
 
     public List<ExecutionHistory> processExecution(Execution execution) throws OrderBookException {
@@ -100,13 +104,18 @@ public class OrderService {
     public void closeOrderBook() throws OrderBookException {
         logger.info("closing orderbook");
         OrderBook orderBook = getOrderBook();
-        orderBook.setStatus(OrderBookStatus.CLOSED);
+        if (orderBook.isOpen()) {
+            orderBook.setStatus(OrderBookStatus.CLOSED);
+        }
+        else {
+            throw new OrderBookException(ERR_002, "Order book is already closed");
+        }
         orderBookRepository.save(orderBook);
         logger.info("closed orderbook");
     }
 
     /**
-     * You can open OrderBook only if all Orders are CLOSED
+     * You can open OrderBook only if all Orders are CLOSED, and there is no other OPEN orderbook
      * @throws OrderBookException
      */
     public void openOrderBook() throws OrderBookException {
@@ -117,9 +126,13 @@ public class OrderService {
             throw new OrderBookException(ERR_004, "unable to open orderbook, there are " + ordersNotClosed.size() + " not closed orders");
         }
         OrderBook orderBook = getOrderBook();
-        orderBook.setStatus(OrderBookStatus.OPEN);
-        orderBookRepository.save(orderBook);
-        logger.info("opened orderbook");
+        if (orderBook.isOpen()) {
+            throw new OrderBookException(ERR_004, "there is already an open orderbook");
+        }
+        OrderBook orderBookNew = new OrderBook();
+        orderBookNew.setStatus(OrderBookStatus.OPEN);
+        orderBookRepository.save(orderBookNew);
+        logger.info("opened new orderbook");
     }
 
     public boolean canCloseOrderBook() {

@@ -39,7 +39,7 @@ public class OrderController {
 
     @PutMapping("/updateOrder/{id}")
     public void updateOrder(@PathVariable("id") Long id, @RequestBody OrderEntryDTO orderEntryDTO) throws OrderBookException {
-        OrderEntry orderEntry = orderService.createOrder(entityDTOConverter.convertOrderEntryDTOToEntity(orderEntryDTO));
+        OrderEntry orderEntry = entityDTOConverter.convertOrderEntryDTOToEntity(orderEntryDTO);
         orderService.updateOrder(id, orderEntry);
     }
 

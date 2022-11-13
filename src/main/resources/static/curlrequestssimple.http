@@ -1,0 +1,164 @@
+# removed delete and update from curirequests.http
+
+POST http://localhost:8080/createOrder
+accept: */*
+Content-Type: application/json
+
+{
+  "availableQuantity": 100,
+  "entryDate": "2022-11-11T10:42:23.740Z",
+  "financialInstrumendId": "ISIN1",
+  "id": 0,
+  "orderType": "BUY",
+  "price": 5,
+  "quantity": 100,
+  "status": "OPEN"
+}
+
+###
+
+
+POST http://localhost:8080/createOrder
+accept: */*
+Content-Type: application/json
+
+{
+  "availableQuantity": 100,
+  "entryDate": "2022-11-11T10:45:23.740Z",
+  "financialInstrumendId": "ISIN1",
+  "id": 0,
+  "orderType": "BUY",
+  "price": 6,
+  "quantity": 100,
+  "status": "OPEN"
+}
+
+###
+
+
+POST http://localhost:8080/createOrder
+accept: */*
+Content-Type: application/json
+
+{
+"availableQuantity": 50,
+"entryDate": "2022-11-11T10:45:23.740Z",
+"financialInstrumendId": "ISIN2",
+"id": 0,
+"orderType": "SELL",
+"price": 4,
+"quantity": 50,
+"status": "OPEN"
+}
+
+###
+
+
+
+POST http://localhost:8080/createOrder
+accept: */*
+Content-Type: application/json
+
+{
+  "availableQuantity": 50,
+  "entryDate": "2022-11-11T10:47:23.740Z",
+  "financialInstrumendId": "ISIN2",
+  "id": 0,
+  "orderType": "SELL",
+  "price": 4,
+  "quantity": 50,
+  "status": "OPEN"
+}
+
+###
+
+
+POST http://localhost:8080/closeOrderBook
+accept: */*
+Content-Type: application/json
+
+{
+}
+###
+POST http://localhost:8080/processExecution
+accept: */*
+Content-Type: application/json
+
+{
+  "executionType": "OFFER",
+  "financialInstrumendId": "ISIN1",
+  "id": 0,
+  "price": 5.5,
+  "quantity": 50
+}
+
+###
+
+
+POST http://localhost:8080/processExecution
+accept: */*
+Content-Type: application/json
+
+{
+  "executionType": "OFFER",
+  "financialInstrumendId": "ISIN1",
+  "id": 0,
+  "price": 8,
+  "quantity": 80
+}
+
+###
+
+POST http://localhost:8080/processExecution
+accept: */*
+Content-Type: application/json
+
+{
+  "executionType": "OFFER",
+  "financialInstrumendId": "ISIN1",
+  "id": 0,
+  "price": 4,
+  "quantity": 200
+}
+
+###
+
+POST http://localhost:8080/processExecution
+accept: */*
+Content-Type: application/json
+
+{
+  "executionType": "ASK",
+  "financialInstrumendId": "ISIN2",
+  "id": 0,
+  "price": 2,
+  "quantity": 200
+}
+
+###
+
+POST http://localhost:8080/processExecution
+accept: */*
+Content-Type: application/json
+
+{
+  "executionType": "ASK",
+  "financialInstrumendId": "ISIN2",
+  "id": 0,
+  "price": 5,
+  "quantity": 200
+}
+
+###
+
+
+
+POST http://localhost:8080/openOrderBook
+accept: */*
+Content-Type: application/json
+
+{
+}
+
+###
+

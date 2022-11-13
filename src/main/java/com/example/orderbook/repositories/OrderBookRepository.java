@@ -1,7 +1,10 @@
 package com.example.orderbook.repositories;
 
 import com.example.orderbook.entities.OrderBook;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface OrderBookRepository extends JpaRepository<OrderBook, Long>  {
+import java.util.Optional;
+
+public interface OrderBookRepository extends CrudRepository<OrderBook, Long> {
+    Optional<OrderBook> findFirstByOrderByIdDesc();
 }
