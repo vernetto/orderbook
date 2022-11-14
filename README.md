@@ -50,8 +50,8 @@ Lifecycle of an OrderEntry
 
 ```mermaid
 graph TD
-    A[OPEN] -->|executio fills it| B(FILLED)
-    B(FILLED) -->|all orders are filled| A[CLOSED]
+    A[OPEN] -->|execution fills it| B(FILLED)
+    B(FILLED) -->|all orders are filled| C[CLOSED]
 ``` 
 
 
