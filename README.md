@@ -42,8 +42,8 @@ Lifecycle of an OrderBook
 
 ```mermaid
 graph TD
-    A[OPEN] -->|all orders filled| B(CLOSED)
-    B(CLOSED) -->|open orderbook| A[OPEN]
+    A[OPEN] -->|all orders created + closeOrderBook| B(CLOSED)
+    B(CLOSED) -->|all orders closed + openOrderBook| A[OPEN]
 ``` 
 
 Lifecycle of an OrderEntry
