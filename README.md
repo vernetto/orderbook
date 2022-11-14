@@ -38,7 +38,21 @@ https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
 https://www.baeldung.com/java-modelmapper-lists
 
 
+Lifecycle of an OrderBook
 
+```mermaid
+graph TD
+    A[OPEN] -->|all orders filled| B(CLOSED)
+    B(CLOSED) -->|open orderbook| A[OPEN]
+``` 
+
+Lifecycle of an OrderEntry
+
+```mermaid
+graph TD
+    A[OPEN] -->|executio fills it| B(FILLED)
+    B(FILLED) -->|all orders are filled| A[CLOSED]
+``` 
 
 
 
